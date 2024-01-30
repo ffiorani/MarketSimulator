@@ -1,2 +1,5 @@
 add_subdirectory(my_lib)
-add_subdirectory(marketPlayer)
+add_subdirectory(MarketPlayer)
+add_subdirectory(Market)
+add_subdirectory(LimitOrderBook)
+add_subdirectory(ExecutionStrategy)

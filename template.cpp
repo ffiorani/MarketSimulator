@@ -67,19 +67,19 @@ public:
         currentPrice = currentPrice + 0.1 * (demand - supply);
     }
 
-    double calculateDemand() {
+    double calculateDemand() const {
         // Implement demand calculation logic
         // For simplicity, a random number is used in this example
         return rand() % 10 + 1;
     }
 
-    double calculateSupply() {
+    double calculateSupply() const {
         // Implement supply calculation logic
         // For simplicity, a random number is used in this example
         return rand() % 10 + 1;
     }
 
-    void displayMarketState() {
+    void displayMarketState() const {
         std::cout << "Current Price: $" << currentPrice << std::endl;
         // Display other relevant market information
     }

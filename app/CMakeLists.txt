@@ -1,2 +1,5 @@
 add_executable(Executable main.cc)
-target_link_libraries(Executable PUBLIC Library)
+
+set(LIBRARIES my_lib LimitOrderBookLib MarketPlayerLib MarketLib)
+
+target_link_libraries(Executable PUBLIC LIBRARIES)
