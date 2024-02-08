@@ -1,52 +1,39 @@
-#include <functional>
+#include <map>
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 #include "Market.h"
 #include "MarketPlayer.h"
 #include "LimitOrderBook.h"
 
-Market::Market(unsigned int numTraders) : marketPlayers() {
+Market::Market(unsigned int numTraders) {
     marketPlayers.reserve(numTraders);
     for (size_t i {0}; i < numTraders; ++i)
-        marketPlayers.emplace(MarketPlayer());
+        marketPlayers.emplace_back();
 }
 
 // need to figure out in what order to place the orders and
 void Market::simulateMarket(unsigned int numSteps) {
-    std::map<double, Order> ordersTimestamped;
-    for (size_t i = 0; i < count; i++)
+    std::map<double, std::shared_ptr<Order>> ordersTimestamped{};
+    for (size_t i = 0; i < numSteps; i++)
     {
-        for (MarketPlayer trader: marketPlayers)
-            ordersTimestamped[trader.generateTimestamp()] = trader.trade();
+        // generate orders for each trader and store them in a map with the timestamp as the key
+        for (MarketPlayer & trader: marketPlayers)
+            ordersTimestamped[trader.generateTimestamp()] = trader.trade(newsGenerator(), limitOrderBook); // need to find a way with for dealing with duplicate timestamps
 
-        auto it {ordersTimestamped.begin()};
-        for (; it < ordersTimestamped.end(); it++)
+        // process the orders in order of timestamp
+        for (auto& timestampedOrder : ordersTimestamped)
         {
-            // no rule for breaking ties between timestamps, hopefully shouldn't occur often
-            this -> processOrder(it -> second);
+            limitOrderBook.addOrder(timestampedOrder.second);
         }
-        this -> limitOrderBook.matchOrders();
+
+        limitOrderBook.matchOrders();
         //we need to save market data to memory after each iteration
         ordersTimestamped.clear();
     }
 }
 
-void Market::processOrder(Order & order) {
-    // if placing order of opposite nature of the active orders, delete all active orders
-    if ((!(order.trader -> activeOrders).empty()) && ((order.trader -> activeOrders.at(0)) -> isBuy != order.isBuy)) {
-            for (std::shared_ptr<Order> & activeOrder: activeOrders)
-                this -> limitOrderBook.deleteActiveOrder(activeOrder);
-
-            (order.trader) -> deleteActiveOrders();
-    }
-
-    std::shared_ptr<Order> orderPtr = std::make_shared<Order>(order);
-    order.trader -> activeOrders.push_back(orderPtr);
-    // dealing separately with market orders and limit orders
-    if (order.isLimit) { // limit order
-        this -> limitOrderBook.placeLimitOrder(orderPtr);
-    } else { // market order
-        this -> limitOrderBook.appendMarketOrder(orderPtr);
-        }
-    }
+double Market::printMarketData() const {
+    return limitOrderBook.get_mid_price();
 }

@@ -1,8 +1,16 @@
 #include <iostream>
 
-#include "my_lib.h"
+#include "Market.h"
 
 int main() {
-    print_hello_world();
+    const size_t numTraders {100};
+    const size_t numSteps {100};
+
+    Market market(numTraders);
+
+    market.simulateMarket(numSteps);
+
+    std::cout << "The mid price is: " << market.printMarketData() << std::endl;
+
     return 0;
 }

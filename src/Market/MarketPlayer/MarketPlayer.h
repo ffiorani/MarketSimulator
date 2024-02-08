@@ -3,13 +3,20 @@
 #include <memory>
 #include <vector>
 
-#include "LimitOrderBook.h"
+
+const double INITIAL_WEALTH = 1.0;
+
+class Order;
+class LimitOrderBook;
 
 // first term is the cash wealth, the second the number of shares
 struct Portfolio {
     double cash;
     double stock;
+    Portfolio();
     Portfolio(double, double);
+    Portfolio operator+(const Portfolio &) const;
+    Portfolio operator+=(const Portfolio &);
 };
 
 class MarketPlayer {
@@ -33,12 +40,17 @@ class MarketPlayer {
 
     public:
         MarketPlayer();
+        ~MarketPlayer() { numCurrTraders--; }
+
+        /************* getters *************/
 
         double getTotalWealth() const;
         double getCash() const;
         int getId() const;
         double getShares() const;
-        std::vector<std::shared_ptr<Order>> getActiveOrder();
+        std::vector<std::shared_ptr<Order>> getActiveOrders();
+
+        /************* helper functions *************/
         double generateTimestamp() const;
 
         double computeProbabilityOfTrading(LimitOrderBook &, double) const;
@@ -53,7 +65,11 @@ class MarketPlayer {
         bool determineLimitOrMarket(double, LimitOrderBook &) const;
         bool determineIfBuyOrSell(double, LimitOrderBook &) const;
 
-        // returns the order the trader wants to request and the timestamp of the decision
-        Order & trade(double, LimitOrderBook &);
+        void updatePortfolio(double, double, double);
+
+        /************* trading functions *************/
+
+        // returns the order the trader wants to request
+        std::shared_ptr<Order> trade(double, LimitOrderBook &);
 
 };

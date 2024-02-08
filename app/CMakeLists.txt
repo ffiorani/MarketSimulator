@@ -1,5 +1,7 @@
+include_directories(${CMAKE_SOURCE_DIR}/src/Market/)
+
+# Add executable
 add_executable(Executable main.cc)
 
-set(LIBRARIES my_lib LimitOrderBookLib MarketPlayerLib MarketLib)
-
-target_link_libraries(Executable PUBLIC LIBRARIES)
+# Link the executable with the library
+target_link_libraries(Executable MarketLib)

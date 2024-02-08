@@ -2,30 +2,53 @@
 #include <random>
 #include <memory>
 
+
 #include "LimitOrderBook.h"
 #include "MarketPlayer.h"
 
 
+/***************************** PORTFOLIO METHODS *****************************/
+Portfolio::Portfolio() : cash{0}, stock{0} {}
+
 Portfolio::Portfolio(double cash, double stock) : cash{cash}, stock{stock} {}
 
+Portfolio Portfolio::operator+(const Portfolio & other) const {
+    Portfolio newPortfolio(0, 0);
+    newPortfolio.cash = this -> cash + other.cash;
+    newPortfolio.stock = this -> stock + other.stock;
+    return newPortfolio;
+}
 
-const double INITIAL_WEALTH{1};
+Portfolio Portfolio::operator+=(const Portfolio & other) {
+    this -> cash += other.cash;
+    this -> stock += other.stock;
+    return *this;
+}
+
+
+/***************************** MARKET_PLAYER METHODS *****************************/
+
+
 int MarketPlayer::numCurrTraders{0};
 
-MarketPlayer::MarketPlayer() : totalWealth(INITIAL_WEALTH), id(numCurrTraders++), portfolio(0, 0) {
+MarketPlayer::MarketPlayer() : totalWealth(INITIAL_WEALTH) {
+    numCurrTraders++;
     std::random_device rd;
     auto distribution = std::uniform_real_distribution<double> (-1., 1.);
-    portfolio = Portfolio(INITIAL_WEALTH * distribution(rd), INITIAL_WEALTH - portfolio.cash);
+    portfolio.cash = INITIAL_WEALTH * std::abs(distribution(rd));
+    portfolio.stock = INITIAL_WEALTH - portfolio.cash;
     newsResponsiveness = distribution(rd);
     connectionSpeed = std::abs(distribution(rd));
 }
 
+/*********** getters ***********/
 double MarketPlayer::getTotalWealth() const {  return totalWealth; }
 double MarketPlayer::getCash() const {  return portfolio.cash; }
 int MarketPlayer::getId() const { return id; }
 double MarketPlayer::getShares() const  { return portfolio.stock; }
-std::vector<std::shared_ptr<Order>> MarketPlayer::getActiveOrder() { return activeOrders; }
+std::vector<std::shared_ptr<Order>> MarketPlayer::getActiveOrders() { return activeOrders; }
 
+/*********** helper functions ***********/
 
 /*  Deletes an active order of @amountOfShares, if present;
     currently only deletes the shared ptr stored by the @MarketPlayer,
@@ -41,6 +64,7 @@ void MarketPlayer::deleteActiveOrders() {
     activeOrders.clear();
 }
 
+// need to implement this; would it be better to use a struct that doesn't initialize a random device at each call?
 double MarketPlayer::generateTimestamp() const {
     std::random_device rd;
     auto distribution = std::uniform_real_distribution<double> (0., 1.);
@@ -109,8 +133,17 @@ double MarketPlayer::computeVolume(double tradingLikelihood, LimitOrderBook & li
     return tradingLikelihood < probabilityOfBuy;
 }
 
+void MarketPlayer::updatePortfolio(double diffPrice, double diffVolume, double sold) {
+    double diffCash {diffPrice * diffVolume * sold};
+    diffVolume *= sold * -1.;
+    Portfolio  diffPortfolio(diffCash, diffVolume);
+    portfolio += diffPortfolio;
+}
 
-Order & MarketPlayer::trade(double news, LimitOrderBook & limitOrderBook) {
+/*********** trading functions ***********/
+
+
+std::shared_ptr<Order> MarketPlayer::trade(double news, LimitOrderBook & limitOrderBook) {
     double tradingLikelihood = this -> computeProbabilityOfTrading(limitOrderBook, news);
 
     bool buy {determineIfBuyOrSell(tradingLikelihood, limitOrderBook)};
@@ -119,7 +152,6 @@ Order & MarketPlayer::trade(double news, LimitOrderBook & limitOrderBook) {
     bool isLimit {this -> determineLimitOrMarket(tradingLikelihood, limitOrderBook)};
 
     //! Should I use std::make_shared<Order> instead and allocate on the heap?
-    Order order(price, volume, buy, isLimit, std::make_shared<MarketPlayer>(*this));
-    auto orderPtr = std::make_shared<Order>(order);
-    return order;
+    auto orderPtr = std::make_shared<Order>(price, volume, buy, isLimit, std::make_shared<MarketPlayer>(*this));
+    return orderPtr;
 }
