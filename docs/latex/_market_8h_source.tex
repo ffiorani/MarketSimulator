@@ -1,0 +1,40 @@
+\doxysection{Market.\+h}
+\hypertarget{_market_8h_source}{}\label{_market_8h_source}\index{/Users/francescofiorani/doc/MarketSimulator/src/Market/Market.h@{/Users/francescofiorani/doc/MarketSimulator/src/Market/Market.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}LimitOrderBook.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}MarketPlayer.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ random\ news\ generator:\ at\ each\ timestep,\ generate\ an\ intensity\ of\ the\ news\ at\ that\ timestep.\ Rarely\ has\ very\ high\ values,\ simulating\ crashes,\ etc}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_news_generator}{NewsGenerator}}\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ std::random\_device\ rd;}
+\DoxyCodeLine{00011\ \ \ \ \ std::mt19937\ gen;}
+\DoxyCodeLine{00012\ \ \ \ \ std::normal\_distribution<>\ dis;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{struct_news_generator}{NewsGenerator}}()\ :\ gen(rd()),\ dis(0,\ 1)\ \{\}\ \textcolor{comment}{//\ mean\ 0,\ standard\ deviation\ 1}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{double}\ operator()()\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dis(gen);}
+\DoxyCodeLine{00018\ \ \ \ \ \}}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_market}{Market}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00023\ \ \ \ \ LimitOrderBook\ limitOrderBook;}
+\DoxyCodeLine{00024\ \ \ \ \ std::vector<MarketPlayer>\ marketPlayers;}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_news_generator}{NewsGenerator}}\ newsGenerator;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_market}{Market}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numTraders);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ helper\ functions}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{double}\ printMarketData()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_ab556feb7189c601987dd0dd47255debe}{simulateMarket}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numSteps);}
+\DoxyCodeLine{00039\ \};}
+
+\end{DoxyCode}

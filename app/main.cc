@@ -10,7 +10,7 @@ int main() {
 
     market.simulateMarket(numSteps);
 
-    std::cout << "The mid price is: " << market.printMarketData() << std::endl;
+    std::cout << market;
 
     return 0;
 }

@@ -1,4 +1,5 @@
 #include <memory>
+#include <iostream>
 
 #include "LimitOrderBook.h"
 #include "MarketPlayer.h"
@@ -75,7 +76,7 @@ double LimitOrderBook::get_ask() const {
 }
 
 double LimitOrderBook::get_bid() const {
-    if (ask_prices.empty())
+    if (bid_prices.empty())
         return LOWER_PRICE_LIMIT;
 
     return bid_prices.top() -> price;
@@ -106,6 +107,10 @@ double LimitOrderBook::getSpread() const {
     return ask_prices.top() -> price - bid_prices.top() -> price;
 }
 
+int LimitOrderBook::getNumActiveOrders() const {
+    return activeOrders.size() + ask_prices.size() + bid_prices.size();
+}
+
 void LimitOrderBook::placeLimitOrder(std::shared_ptr<Order> limitOrderPtr) {
 
         if (limitOrderPtr -> isBuy) { // perhaps the previous implementation should be part of match Orders: otherwise limit orders will have priority over market orders!!
@@ -115,6 +120,7 @@ void LimitOrderBook::placeLimitOrder(std::shared_ptr<Order> limitOrderPtr) {
         }
 }
 
+// this is duplicated by the addOrder method
 void LimitOrderBook::appendMarketOrder(std::shared_ptr<Order> marketOrderPtr) {
     activeOrders.push_back(marketOrderPtr);
 }
@@ -151,7 +157,7 @@ void LimitOrderBook::matchOrders() {
         double currTransaction {volumeAndTransaction.second};
 
         // update the price of the limit order book
-        updateBookPrices(currTransaction, currVolume);
+        // updateBookPrices(currTransaction, currVolume);
 
         // update total volume
         totalVolume += currVolume;
@@ -188,6 +194,7 @@ void LimitOrderBook::updateVWAP(double newVWAP) {
     vwap = newVWAP;
 }
 
+// should we also make it depend more directly on the difference between total ask volume and total bid volume?
 void LimitOrderBook::updateBookPrices(double transaction, double volume){
     double volumeAdjustedDifferential {transaction / volume - get_mid_price()};
     ask_prices.updatePrices(volumeAdjustedDifferential);
@@ -202,4 +209,23 @@ void LimitOrderBook::deleteLimitOrder(std::shared_ptr<Order> orderPtr) {
         bid_prices.remove(orderPtr);
     else
         ask_prices.remove(orderPtr);
+}
+
+std::ostream & operator<<(std::ostream & os, const LimitOrderBook & book) {
+    os << "Ask orders: ";
+    os << "**********************************\n";
+    os << book.ask_prices << std::endl;
+    os << "**********************************\n";
+
+    os << "Bid orders: ";
+    os << "**********************************\n";
+    os << book.bid_prices << std::endl;
+    os << "**********************************\n";
+
+    os << "Unmatched orders: ";
+    for (auto it = book.activeOrders.cbegin(); it != book.activeOrders.cend(); it++)
+        os << (*it) -> price << " ";
+    os << "\n";
+
+    return os;
 }

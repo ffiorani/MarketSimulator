@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <random>
+#include <iostream>
+#include <string>
+
 #include "LimitOrderBook.h"
 #include "MarketPlayer.h"
 
@@ -21,15 +24,24 @@ struct NewsGenerator {
 class Market {
 private:
     LimitOrderBook limitOrderBook;
-    std::vector<MarketPlayer> marketPlayers;
+    std::vector<std::shared_ptr<MarketPlayer>> marketPlayers;
     NewsGenerator newsGenerator;
 
 public:
     explicit Market(unsigned int numTraders);
 
-    // helper functions
-    double printMarketData() const;
+    // getters
 
-    // simulate the market for a given number of steps
+    unsigned int getNumTraders() const;
+    // helper functions
+    std::string printMarketSummary() const;
+
+    /**
+     * @brief
+     * Runs the market simulation for @numSteps timesteps
+     * @param numSteps
+     */
     void simulateMarket(unsigned int numSteps);
+
+    friend std::ostream & operator<<(std::ostream & os, const Market & market);
 };

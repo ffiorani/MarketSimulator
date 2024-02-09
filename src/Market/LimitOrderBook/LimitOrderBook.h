@@ -7,6 +7,7 @@
 #include <vector>
 #include <list>
 #include <cassert>
+#include <iostream>
 
 #include "MarketPlayer.h"
 
@@ -14,7 +15,7 @@
 const double UPPER_PRICE_LIMIT = 10000;
 const double LOWER_PRICE_LIMIT  = 0.0;
 const double INITIAL_PRICE= 1.0;
-const double PRICE_CHANGE_FACTOR = 0.01;
+const double PRICE_CHANGE_FACTOR = 10000.0;
 
 struct Order
 {
@@ -41,7 +42,7 @@ template<class T>
 struct PtrLess
     : public std::__binary_function<T, T, bool> {
         bool operator()(const T& left, const T& right) const{
-            return ((*left) <( *right));
+            return ((*left) < (*right));
         }
 };
 
@@ -79,9 +80,22 @@ public:
 
     void updatePrices(double priceChange) {
         priceChange *= PRICE_CHANGE_FACTOR;
-        for (auto& order : this -> c) {
-            order -> addToCurrentPrice(priceChange);
+        for (auto orderPtr : this -> c) {
+            orderPtr -> addToCurrentPrice(priceChange);
         }
+    }
+
+    // void updateVolumes(double volumeChange) {
+    //     for (auto orderPtr : this -> c) {
+    //         orderPtr -> updateOrderVolume(volumeChange);
+    //     }
+    // }
+
+    friend std::ostream & operator<<(std::ostream & os, const custom_priority_queue & pq) {
+        for (auto orderPtr : pq.c) {
+            os << "Price: " << orderPtr -> price << " Volume: " << orderPtr -> volume << std::endl;
+        }
+        return os;
     }
 };
 
@@ -89,16 +103,6 @@ class LimitOrderBook {
 private:
     double vwap;
     double totalVolume;
-
-    custom_priority_queue<std::shared_ptr<Order>,
-                        PtrGreater<std::shared_ptr<Order>>> ask_prices;
-
-    custom_priority_queue<std::shared_ptr<Order>,
-                        PtrLess<std::shared_ptr<Order>>> bid_prices;
-
-    /* The following linked list contains the Market orders that have not been matched
-       and the current orders being placed */
-    std::list<std::shared_ptr<Order>> activeOrders;
 
 
     // still to implement
@@ -110,7 +114,7 @@ private:
         if (book.empty())
             return {orderPtr -> volume, 0.};
 
-        assert(orderPtr -> isBuy != book.top()->isBuy);
+        assert(orderPtr -> isBuy != book.top() -> isBuy);
 
         double volumeAdjustedOutcome {0.};
         double volumeToMatch {orderPtr -> volume};
@@ -146,23 +150,38 @@ private:
     void placeLimitOrder(std::shared_ptr<Order>);
     void deleteLimitOrder(std::shared_ptr<Order>);
     void appendMarketOrder(std::shared_ptr<Order>);
-    void updateBookPrices(double, double);
-
     // currently computes vwap day by day
     void updateVWAP(double);
 
 public:
+// make this private once done with testing
+/* The following linked list contains the Market orders that have not been matched
+       and the current orders being placed */
+    std::list<std::shared_ptr<Order>> activeOrders;
+    // make these private once done with testing
+    custom_priority_queue<std::shared_ptr<Order>,
+                        PtrGreater<std::shared_ptr<Order>>> ask_prices;
+
+    custom_priority_queue<std::shared_ptr<Order>,
+                        PtrLess<std::shared_ptr<Order>>> bid_prices;
+
+    friend std::ostream & operator<<(std::ostream &, const LimitOrderBook &);
     double get_ask() const;
     double get_bid() const;
     double get_mid_price() const;
     double get_VWAP() const;
     double getSpread() const;
     double get_total_volume() const;
+    int getNumActiveOrders() const;
+    void updateBookPrices(double, double);
 
 
     void addOrder(std::shared_ptr<Order>);
 
-    /* the method is invoked every time a new order is added to the book
-       takes the last order added as input, and matches it with the lowest bid/ ask prices already available */
+    /**
+     * @brief
+     * the method is invoked every time a new order is added to the book
+     * takes the last order added as input, and matches it with the lowest bid/ ask prices already available
+     */
     void matchOrders();
 };

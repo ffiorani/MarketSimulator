@@ -16,7 +16,7 @@ struct Portfolio {
     Portfolio();
     Portfolio(double, double);
     Portfolio operator+(const Portfolio &) const;
-    Portfolio operator+=(const Portfolio &);
+    Portfolio & operator+=(const Portfolio &);
 };
 
 class MarketPlayer {
@@ -49,6 +49,7 @@ class MarketPlayer {
         int getId() const;
         double getShares() const;
         std::vector<std::shared_ptr<Order>> getActiveOrders();
+        int getNumCurrTraders() const;
 
         /************* helper functions *************/
         double generateTimestamp() const;
@@ -69,7 +70,13 @@ class MarketPlayer {
 
         /************* trading functions *************/
 
-        // returns the order the trader wants to request
-        std::shared_ptr<Order> trade(double, LimitOrderBook &);
+        /**
+         * @brief
+         * Takes the @traderPtr as input, who decides what order they want to place
+         * based on the information available in the @LimitOrderBook and the @news
+         * @return
+         * returns a shared pointer to the order they want to place
+         */
+        friend std::shared_ptr<Order> trade(double news, LimitOrderBook & LimitOrderBook, std::shared_ptr<MarketPlayer> traderPtr);
 
 };

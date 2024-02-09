@@ -19,7 +19,7 @@ Portfolio Portfolio::operator+(const Portfolio & other) const {
     return newPortfolio;
 }
 
-Portfolio Portfolio::operator+=(const Portfolio & other) {
+Portfolio & Portfolio::operator+=(const Portfolio & other) {
     this -> cash += other.cash;
     this -> stock += other.stock;
     return *this;
@@ -47,6 +47,7 @@ double MarketPlayer::getCash() const {  return portfolio.cash; }
 int MarketPlayer::getId() const { return id; }
 double MarketPlayer::getShares() const  { return portfolio.stock; }
 std::vector<std::shared_ptr<Order>> MarketPlayer::getActiveOrders() { return activeOrders; }
+int MarketPlayer::getNumCurrTraders() const { return numCurrTraders; }
 
 /*********** helper functions ***********/
 
@@ -136,22 +137,22 @@ double MarketPlayer::computeVolume(double tradingLikelihood, LimitOrderBook & li
 void MarketPlayer::updatePortfolio(double diffPrice, double diffVolume, double sold) {
     double diffCash {diffPrice * diffVolume * sold};
     diffVolume *= sold * -1.;
-    Portfolio  diffPortfolio(diffCash, diffVolume);
+    Portfolio diffPortfolio(diffCash, diffVolume);
     portfolio += diffPortfolio;
 }
 
 /*********** trading functions ***********/
 
+// perhaps trade should belong to the market, or not a friend of the class
+// thing is I don't know how else to get the shared pointer to the order constructor
+std::shared_ptr<Order> trade(double news, LimitOrderBook & limitOrderBook, std::shared_ptr<MarketPlayer> traderPtr) {
+    double tradingLikelihood = traderPtr -> computeProbabilityOfTrading(limitOrderBook, news);
 
-std::shared_ptr<Order> MarketPlayer::trade(double news, LimitOrderBook & limitOrderBook) {
-    double tradingLikelihood = this -> computeProbabilityOfTrading(limitOrderBook, news);
+    bool buy {traderPtr -> determineIfBuyOrSell(tradingLikelihood, limitOrderBook)};
+    double volume {traderPtr -> computeVolume(tradingLikelihood, limitOrderBook)};
+    double price {traderPtr -> computePrice(tradingLikelihood, limitOrderBook)};
+    bool isLimit {traderPtr -> determineLimitOrMarket(tradingLikelihood, limitOrderBook)};
 
-    bool buy {determineIfBuyOrSell(tradingLikelihood, limitOrderBook)};
-    double volume {this -> computeVolume(tradingLikelihood, limitOrderBook)};
-    double price {this -> computePrice(tradingLikelihood, limitOrderBook)};
-    bool isLimit {this -> determineLimitOrMarket(tradingLikelihood, limitOrderBook)};
-
-    //! Should I use std::make_shared<Order> instead and allocate on the heap?
-    auto orderPtr = std::make_shared<Order>(price, volume, buy, isLimit, std::make_shared<MarketPlayer>(*this));
+    auto orderPtr = std::make_shared<Order>(price, volume, buy, isLimit, traderPtr);
     return orderPtr;
 }

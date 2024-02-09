@@ -1,0 +1,5 @@
+if(ENABLE_TESTING)
+    add_subdirectory(MarketPlayerTests)
+    add_subdirectory(MarketTests)
+    add_subdirectory(LimitOrderBookTests)
+endif()
