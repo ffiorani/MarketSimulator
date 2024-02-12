@@ -34,6 +34,13 @@ TEST_CASE("MarketPlayer trading functions") {
         REQUIRE(probability <= 1.0);
     }
 
+    SECTION("Probability of trading should be between 0 and 1 - negative news") {
+        double news = -0.5;
+        double probability = playerPtr -> computeProbabilityOfTrading(limitOrderBook, news);
+        REQUIRE(probability >= 0.0);
+        REQUIRE(probability <= 1.0);
+    }
+
     SECTION("Determining limit or market order should return correct result") {
         double tradingLikelihood = 0.5;
         bool isLimit = playerPtr -> determineLimitOrMarket(tradingLikelihood, limitOrderBook);
@@ -48,13 +55,27 @@ TEST_CASE("MarketPlayer trading functions") {
 
     SECTION("Computing price should return correct result") {
         double tradingLikelihood = 0.5;
-        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook);
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, true);
+        REQUIRE(price == 0.5);
+    }
+
+    SECTION("Computing price should return correct result - sell order") {
+        double tradingLikelihood = 0.5;
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, false);
         REQUIRE(price == 0.5);
     }
 
     SECTION("Computing volume should return correct result") {
         double tradingLikelihood = 0.5;
-        double volume = playerPtr -> computeVolume(tradingLikelihood, limitOrderBook);
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, true);
+        double volume = playerPtr -> computeVolume(tradingLikelihood, limitOrderBook, true, price);
+        REQUIRE(volume == 0.5);
+    }
+
+    SECTION("Computing volume should return correct result - sell order") {
+        double tradingLikelihood = 0.5;
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, true);
+        double volume = playerPtr -> computeVolume(tradingLikelihood, limitOrderBook, false, price);
         REQUIRE(volume == 0.5);
     }
 
@@ -67,6 +88,48 @@ TEST_CASE("MarketPlayer trading functions") {
 
         REQUIRE(playerPtr -> getCash() == INITIAL_WEALTH - (diffPrice * diffVolume * sold));
         REQUIRE(playerPtr -> getShares() == diffVolume * sold * -1.0);
+    }
+
+    SECTION("Getting id should return a valid id") {
+        int id = playerPtr -> getId();
+        REQUIRE(id >= 0);
+    }
+
+    SECTION("Compute Volume should return a valid volume") {
+        double tradingLikelihood = 0.5;
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, true);
+        double volume = playerPtr -> computeVolume(tradingLikelihood, limitOrderBook, true, price);
+        REQUIRE(volume > 0.01);
+    }
+
+    SECTION("Compute Volume should return a valid volume - sell order") {
+        double tradingLikelihood = 0.5;
+        double price = playerPtr -> computePrice(tradingLikelihood, limitOrderBook, true);
+        double volume = playerPtr -> computeVolume(tradingLikelihood, limitOrderBook, false, price);
+        REQUIRE(volume > 0.01);
+    }
+
+    SECTION("Deleting active order should remove the order") {
+        auto orderPtr = std::make_shared<Order>(150.0, 100, false, true, playerPtr);
+        playerPtr -> deleteActiveOrder(orderPtr);
+        REQUIRE(playerPtr -> getActiveOrders().size() == 0);
+    }
+
+    SECTION("Generating timestamp should return a valid timestamp") {
+        double timestamp = playerPtr -> generateTimestamp();
+        REQUIRE(timestamp >= 0.0);
+    }
+    SECTION("Getting active orders should return a vector of orders") {
+        auto orderPtr = std::make_shared<Order>(150.0, 100, false, true, playerPtr);
+        limitOrderBook.addOrder(orderPtr);
+        REQUIRE(playerPtr -> getActiveOrders().size() == 1);
+    }
+
+    SECTION("Deleting active orders should remove all orders") {
+        auto orderPtr = std::make_shared<Order>(150.0, 100, false, true, playerPtr);
+        limitOrderBook.addOrder(orderPtr);
+        playerPtr -> deleteActiveOrders();
+        REQUIRE(playerPtr -> getActiveOrders().size() == 0);
     }
 
     SECTION("Trading should return a valid order") {

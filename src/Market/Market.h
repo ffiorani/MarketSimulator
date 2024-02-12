@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <random>
+#include <vector>
 #include <iostream>
 #include <string>
 
@@ -36,12 +37,14 @@ public:
     // helper functions
     std::string printMarketSummary() const;
 
+    LimitOrderBook & getLimitOrderBook() { return limitOrderBook; }
+
     /**
      * @brief
      * Runs the market simulation for @numSteps timesteps
      * @param numSteps
      */
-    void simulateMarket(unsigned int numSteps);
+    void simulateMarket(unsigned int numSteps, std::vector<double> & priceHistory);
 
     friend std::ostream & operator<<(std::ostream & os, const Market & market);
 };

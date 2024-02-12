@@ -5,4 +5,4 @@ set(TEST_INCLUDES "./")
 
 add_executable(${TEST_MAIN} ${TEST_SOURCES})
 target_include_directories(${TEST_MAIN} PUBLIC ${TEST_INCLUDES})
-target_link_libraries(${TEST_MAIN} MarketLib LimitOrderBookLib Catch2::Catch2)
+target_link_libraries(${TEST_MAIN} MarketLib LimitOrderBookLib MarketPlayerLib Catch2::Catch2)

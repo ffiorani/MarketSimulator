@@ -34,11 +34,16 @@ int MarketPlayer::numCurrTraders{0};
 MarketPlayer::MarketPlayer() : totalWealth(INITIAL_WEALTH) {
     numCurrTraders++;
     std::random_device rd;
-    auto distribution = std::uniform_real_distribution<double> (-1., 1.);
-    portfolio.cash = INITIAL_WEALTH * std::abs(distribution(rd));
+    auto wealthDistribution = std::uniform_real_distribution<double> (0., 1.);
+    auto connectionDistribution = std::uniform_real_distribution<double> (0., 1.);
+    auto newsDistribution = std::normal_distribution<double> (0., 1.);
+    id = numCurrTraders;
+
+    // all traders start with the same amount of total wealth, but different portfolios
+    portfolio.cash = INITIAL_WEALTH * wealthDistribution(rd);
     portfolio.stock = INITIAL_WEALTH - portfolio.cash;
-    newsResponsiveness = distribution(rd);
-    connectionSpeed = std::abs(distribution(rd));
+    newsResponsiveness = newsDistribution(rd);
+    connectionSpeed = connectionDistribution(rd);
 }
 
 /*********** getters ***********/
@@ -69,70 +74,81 @@ void MarketPlayer::deleteActiveOrders() {
 double MarketPlayer::generateTimestamp() const {
     std::random_device rd;
     auto distribution = std::uniform_real_distribution<double> (0., 1.);
-    return distribution(rd);
+    return connectionSpeed + distribution(rd);
 }
 
 double MarketPlayer::computeProbabilityOfTrading(LimitOrderBook & limitOrderBook, double news) const {
-    double probabilityOfTrading {1.};
-    // if the trader has no active orders, they will always trade
-    if (activeOrders.empty())
-        return probabilityOfTrading;
+    double probabilityOfTrading {0.5};
 
-    // if the trader has active orders, they will trade with a probability that depends on the news and the spread
-    double spread {limitOrderBook.getSpread()};
+    // double spread {limitOrderBook.getSpread()};
     double newsImpact {newsResponsiveness * news};
-    double spreadImpact {connectionSpeed * spread};
-    probabilityOfTrading = 1. / (1. + std::exp(-newsImpact - spreadImpact));
-    return probabilityOfTrading;
+    // double spreadImpact {connectionSpeed * spread};
+    // probabilityOfTrading = 1. / (1. + std::exp(-newsImpact - spreadImpact));
+    return probabilityOfTrading * (1. + newsImpact);
 }
 
 bool MarketPlayer::determineLimitOrMarket(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
-    // if the trader has no active orders, they will always trade
-    if (activeOrders.empty())
-        return false;
-
-    // if the trader has active orders, they will trade with a probability that depends on the news and the spread
-    double spread {limitOrderBook.getSpread()};
-    double spreadImpact {connectionSpeed * spread};
-    double probabilityOfMarketOrder {1. / (1. + std::exp(-spreadImpact))};
-    return tradingLikelihood < probabilityOfMarketOrder;
+    return tradingLikelihood < 0.2 || tradingLikelihood > 0.8;
 }
 
 bool MarketPlayer::determineIfBuyOrSell(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
-    // if the trader has no active orders, they will always trade
-    if (activeOrders.empty())
-        return false;
-
-    // if the trader has active orders, they will trade with a probability that depends on the news and the spread
-    double spread {limitOrderBook.getSpread()};
-    double spreadImpact {connectionSpeed * spread};
-    double probabilityOfBuy {1. / (1. + std::exp(-spreadImpact))};
-    return tradingLikelihood < probabilityOfBuy;
+    return tradingLikelihood > 0.5;
 }
 
-double MarketPlayer::computePrice(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
-    // if the trader has no active orders, they will always trade
-    if (activeOrders.empty())
-        return 0.;
+// Perhaps I should not have tradingLikelihood affect the price as much; it already affect too many things
+double MarketPlayer::computePrice(double tradingLikelihood, LimitOrderBook & limitOrderBook, bool isBuy) const {
+    double price {0.0};
+    if (isBuy) {
+        if (limitOrderBook.hasBidOrders()) {
+            price = limitOrderBook.get_ask();
+        } else {
+            price = limitOrderBook.get_mid_price();
+        }
+    } else {
+        if (limitOrderBook.hasAskOrders()) {
+            price = limitOrderBook.get_bid();
+        } else {
+            price = limitOrderBook.get_mid_price();
+        }
+    }
 
-    // if the trader has active orders, they will trade with a probability that depends on the news and the spread
-    double spread {limitOrderBook.getSpread()};
-    double spreadImpact {connectionSpeed * spread};
-    double probabilityOfBuy {1. / (1. + std::exp(-spreadImpact))};
-    return tradingLikelihood < probabilityOfBuy;
+    if (isBuy) {
+        if (tradingLikelihood < 0.2) {
+            return price * (1. - tradingLikelihood);
+        } else if (tradingLikelihood > 0.8) {
+            return price * (1. + tradingLikelihood);
+        }
+    } else {
+        if (tradingLikelihood < 0.2) {
+            return price * (1. + tradingLikelihood);
+        } else if (tradingLikelihood > 0.8) {
+            return price * (1. - tradingLikelihood);
+        }
+    }
 }
 
-double MarketPlayer::computeVolume(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
-    // if the trader has no active orders, they will always trade
-    if (activeOrders.empty())
-        return 0.;
+double MarketPlayer::computeVolume(double tradingLikelihood, LimitOrderBook & limitOrderBook, bool isBuy, double price) const {
+    if (price <= LOWER_PRICE_LIMIT)
+        return 0.0;
 
-    // if the trader has active orders, they will trade with a probability that depends on the news and the spread
-    double spread {limitOrderBook.getSpread()};
-    double spreadImpact {connectionSpeed * spread};
-    double probabilityOfBuy {1. / (1. + std::exp(-spreadImpact))};
-    return tradingLikelihood < probabilityOfBuy;
+    double ans {0.};
+
+    if (isBuy)
+        ans = (portfolio.cash) * tradingLikelihood;
+    else
+        ans =  portfolio.stock * tradingLikelihood;
+
+    if (ans < LOWER_VOLUME_LIMIT)
+        return 0.0;
+
+    // TODO: I need to check if the trader already has an order that would cause them to go bankrupt
+
+    if (isBuy && price * ans > portfolio.cash)
+        return portfolio.cash / price < INITIAL_WEALTH ? portfolio.cash / price : INITIAL_WEALTH;
+
+    return ans < INITIAL_WEALTH ? ans : INITIAL_WEALTH;
 }
+
 
 void MarketPlayer::updatePortfolio(double diffPrice, double diffVolume, double sold) {
     double diffCash {diffPrice * diffVolume * sold};
@@ -146,12 +162,21 @@ void MarketPlayer::updatePortfolio(double diffPrice, double diffVolume, double s
 // perhaps trade should belong to the market, or not a friend of the class
 // thing is I don't know how else to get the shared pointer to the order constructor
 std::shared_ptr<Order> trade(double news, LimitOrderBook & limitOrderBook, std::shared_ptr<MarketPlayer> traderPtr) {
-    double tradingLikelihood = traderPtr -> computeProbabilityOfTrading(limitOrderBook, news);
+    double tradingProbability = traderPtr -> computeProbabilityOfTrading(limitOrderBook, news);
 
-    bool buy {traderPtr -> determineIfBuyOrSell(tradingLikelihood, limitOrderBook)};
-    double volume {traderPtr -> computeVolume(tradingLikelihood, limitOrderBook)};
-    double price {traderPtr -> computePrice(tradingLikelihood, limitOrderBook)};
-    bool isLimit {traderPtr -> determineLimitOrMarket(tradingLikelihood, limitOrderBook)};
+    if (tradingProbability < LOWER_TRADING_LIMIT)
+        return nullptr;
+
+    bool buy {traderPtr -> determineIfBuyOrSell(tradingProbability, limitOrderBook)};
+    double price {traderPtr -> computePrice(tradingProbability, limitOrderBook, buy)};
+    if (price <= LOWER_PRICE_LIMIT)
+        return nullptr;
+
+    double volume {traderPtr -> computeVolume(tradingProbability, limitOrderBook, buy, price)};
+    if (volume <= LOWER_VOLUME_LIMIT)
+        return nullptr;
+
+    bool isLimit {traderPtr -> determineLimitOrMarket(tradingProbability, limitOrderBook)};
 
     auto orderPtr = std::make_shared<Order>(price, volume, buy, isLimit, traderPtr);
     return orderPtr;

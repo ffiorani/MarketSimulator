@@ -68,6 +68,14 @@ void Order::addToCurrentPrice(double volumeAdjustedOutcome) {
 
 // Implementing LimitOrderBook methods
 
+bool LimitOrderBook::hasAskOrders() const {
+    return !ask_prices.empty();
+}
+
+bool LimitOrderBook::hasBidOrders() const {
+    return !bid_prices.empty();
+}
+
 double LimitOrderBook::get_ask() const {
     if (ask_prices.empty())
         return UPPER_PRICE_LIMIT;

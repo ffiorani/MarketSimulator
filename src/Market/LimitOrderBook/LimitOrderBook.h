@@ -13,7 +13,7 @@
 
 
 const double UPPER_PRICE_LIMIT = 10000;
-const double LOWER_PRICE_LIMIT  = 0.0;
+const double LOWER_PRICE_LIMIT  = 0.00001;
 const double INITIAL_PRICE= 1.0;
 const double PRICE_CHANGE_FACTOR = 10000.0;
 
@@ -131,11 +131,12 @@ private:
             limitTrader -> updatePortfolio(volumeToMatchWithBestOrder, bestOrder -> price, orderPtr -> isBuy ? 1. : -1.);
 
             volumeToMatch -= volumeToMatchWithBestOrder;
+
             if (volumeToMatch > 0) { // if the order is not fully matched, delete the best order
                 book.pop();
                 limitTrader -> deleteActiveOrder(bestOrder);
             } else {
-                bestOrder -> updateOrderVolume(volumeToMatchWithBestOrder * -1.);
+                bestOrder -> updateOrderVolume(bestOrder -> volume - volumeToMatchWithBestOrder);
             }
 
             volumeAdjustedOutcome += volumeToMatchWithBestOrder * bestOrder -> price;
@@ -166,6 +167,8 @@ public:
                         PtrLess<std::shared_ptr<Order>>> bid_prices;
 
     friend std::ostream & operator<<(std::ostream &, const LimitOrderBook &);
+    bool hasAskOrders() const;
+    bool hasBidOrders() const;
     double get_ask() const;
     double get_bid() const;
     double get_mid_price() const;

@@ -5,6 +5,8 @@
 
 
 const double INITIAL_WEALTH = 1.0;
+const double LOWER_VOLUME_LIMIT = 0.001;
+const double LOWER_TRADING_LIMIT = 0.05;
 
 class Order;
 class LimitOrderBook;
@@ -60,8 +62,8 @@ class MarketPlayer {
         void deleteActiveOrders();
         void deleteActiveOrder(std::shared_ptr<Order>);
 
-        double computePrice(double, LimitOrderBook &) const;
-        double computeVolume(double, LimitOrderBook &) const;
+        double computePrice(double, LimitOrderBook &, bool) const;
+        double computeVolume(double, LimitOrderBook &, bool, double) const;
 
         bool determineLimitOrMarket(double, LimitOrderBook &) const;
         bool determineIfBuyOrSell(double, LimitOrderBook &) const;

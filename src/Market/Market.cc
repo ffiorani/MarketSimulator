@@ -27,13 +27,19 @@ std::string Market::printMarketSummary() const {
 }
 
 // need to figure out in what order to place the orders and
-void Market::simulateMarket(unsigned int numSteps) {
+void Market::simulateMarket(unsigned int numSteps, std::vector<double> & priceHistory) {
     std::map<double, std::shared_ptr<Order>> ordersTimestamped{};
+    priceHistory.reserve(numSteps);
+
     for (size_t i = 0; i < numSteps; i++)
     {
         // generate orders for each trader and store them in a map with the timestamp as the key
         for (auto traderPtr: marketPlayers)
-            ordersTimestamped.insert({traderPtr -> generateTimestamp(), trade(newsGenerator(), limitOrderBook, traderPtr)}); // need to find a way with for dealing with duplicate timestamps
+        {
+            auto orderPtr = trade(newsGenerator(), limitOrderBook, traderPtr);
+            if (orderPtr != nullptr)
+                ordersTimestamped.insert({traderPtr -> generateTimestamp(), orderPtr}); // need to find a way with for dealing with duplicate timestamps
+        }
 
         // process the orders in order of timestamp
         for (auto& timestampedOrder : ordersTimestamped)
@@ -44,6 +50,7 @@ void Market::simulateMarket(unsigned int numSteps) {
         limitOrderBook.matchOrders();
         //we need to save market data to memory after each iteration
         ordersTimestamped.clear();
+        priceHistory.push_back(limitOrderBook.get_mid_price());
     }
 }
 
