@@ -11,3 +11,6 @@ generate_documentation:
 prepare_and_build:
 	make prepare
 	cd ./build && cmake .. && cmake --build .
+
+run_executable:
+	cd ./build/app && ./Executable
