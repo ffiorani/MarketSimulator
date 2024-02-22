@@ -12,6 +12,12 @@ unsigned int {\bfseries get\+Num\+Traders} () const
 \Hypertarget{class_market_a3f5d3989a16e258bad2353ce9c2a93f3}\label{class_market_a3f5d3989a16e258bad2353ce9c2a93f3} 
 std\+::string {\bfseries print\+Market\+Summary} () const
 \item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{class_market_a36507fe9bf00d8e735f91d107245c885}{get\+Cash\+Distribution}} () const
+\begin{DoxyCompactList}\small\item\em Returns a sorted vector of the cash distribution of the traders. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{class_market_a27a6253f15d25da5a56a9e39e956c76f}{get\+Shares\+Distribution}} () const
+\begin{DoxyCompactList}\small\item\em Returns a sorted vector of the shares distribution of the traders. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{class_market_a025408b753514fad147cab03e9c47bfb}{get\+Wealth\+Distribution}} () const
+\begin{DoxyCompactList}\small\item\em Returns a sorted vector of the wealth distribution of the traders. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \& \mbox{\hyperlink{class_market_abfdbae7949fef0340b219a4d1e0b7d82}{get\+Limit\+Order\+Book}} () const
 \begin{DoxyCompactList}\small\item\em Get the Limit \doxylink{struct_order}{Order} Book object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_market_a0398c620113937712fe96f4bb8795d09}{simulate\+Market}} (unsigned int num\+Steps, std\+::vector$<$ double $>$ \&price\+History)
@@ -25,6 +31,19 @@ std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\
 
 
 \doxysubsection{Member Function Documentation}
+\Hypertarget{class_market_a36507fe9bf00d8e735f91d107245c885}\label{class_market_a36507fe9bf00d8e735f91d107245c885} 
+\index{Market@{Market}!getCashDistribution@{getCashDistribution}}
+\index{getCashDistribution@{getCashDistribution}!Market@{Market}}
+\doxysubsubsection{\texorpdfstring{getCashDistribution()}{getCashDistribution()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Market\+::get\+Cash\+Distribution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns a sorted vector of the cash distribution of the traders. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ 
+\end{DoxyReturn}
 \Hypertarget{class_market_abfdbae7949fef0340b219a4d1e0b7d82}\label{class_market_abfdbae7949fef0340b219a4d1e0b7d82} 
 \index{Market@{Market}!getLimitOrderBook@{getLimitOrderBook}}
 \index{getLimitOrderBook@{getLimitOrderBook}!Market@{Market}}
@@ -37,6 +56,32 @@ Get the Limit \doxylink{struct_order}{Order} Book object.
 
 \begin{DoxyReturn}{Returns}
 
+\end{DoxyReturn}
+\Hypertarget{class_market_a27a6253f15d25da5a56a9e39e956c76f}\label{class_market_a27a6253f15d25da5a56a9e39e956c76f} 
+\index{Market@{Market}!getSharesDistribution@{getSharesDistribution}}
+\index{getSharesDistribution@{getSharesDistribution}!Market@{Market}}
+\doxysubsubsection{\texorpdfstring{getSharesDistribution()}{getSharesDistribution()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Market\+::get\+Shares\+Distribution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns a sorted vector of the shares distribution of the traders. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ 
+\end{DoxyReturn}
+\Hypertarget{class_market_a025408b753514fad147cab03e9c47bfb}\label{class_market_a025408b753514fad147cab03e9c47bfb} 
+\index{Market@{Market}!getWealthDistribution@{getWealthDistribution}}
+\index{getWealthDistribution@{getWealthDistribution}!Market@{Market}}
+\doxysubsubsection{\texorpdfstring{getWealthDistribution()}{getWealthDistribution()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Market\+::get\+Wealth\+Distribution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns a sorted vector of the wealth distribution of the traders. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$double$>$ 
 \end{DoxyReturn}
 \Hypertarget{class_market_a0398c620113937712fe96f4bb8795d09}\label{class_market_a0398c620113937712fe96f4bb8795d09} 
 \index{Market@{Market}!simulateMarket@{simulateMarket}}

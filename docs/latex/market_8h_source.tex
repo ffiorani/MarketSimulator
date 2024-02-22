@@ -41,11 +41,17 @@
 \DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ helper\ functions}}
 \DoxyCodeLine{00038\ \ \ \ \ std::string\ printMarketSummary()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{00039\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&\ \mbox{\hyperlink{class_market_abfdbae7949fef0340b219a4d1e0b7d82}{getLimitOrderBook}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ limitOrderBook;\ \}}
+\DoxyCodeLine{00045\ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{class_market_a36507fe9bf00d8e735f91d107245c885}{getCashDistribution}}()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{00046\ }
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_a0398c620113937712fe96f4bb8795d09}{simulateMarket}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numSteps,\ std::vector<double>\ \&\ priceHistory);}
-\DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ operator<<(std::ostream\ \&\ os,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_market}{Market}}\ \&\ market);}
-\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00053\ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{class_market_a27a6253f15d25da5a56a9e39e956c76f}{getSharesDistribution}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00061\ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{class_market_a025408b753514fad147cab03e9c47bfb}{getWealthDistribution}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&\ \mbox{\hyperlink{class_market_abfdbae7949fef0340b219a4d1e0b7d82}{getLimitOrderBook}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ limitOrderBook;\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_a0398c620113937712fe96f4bb8795d09}{simulateMarket}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ numSteps,\ std::vector<double>\ \&\ priceHistory);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ operator<<(std::ostream\ \&\ os,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_market}{Market}}\ \&\ market);}
+\DoxyCodeLine{00078\ \};}
 
 \end{DoxyCode}

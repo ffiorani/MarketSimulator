@@ -12,6 +12,9 @@ class that models a limit order book. It has containers for ask prices, bid pric
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\Hypertarget{class_limit_order_book_a5ac233e8790e35ad58cbc81458c24d71}\label{class_limit_order_book_a5ac233e8790e35ad58cbc81458c24d71} 
+{\bfseries Limit\+Order\+Book} ()
+\begin{DoxyCompactList}\small\item\em Construct a new Limit \doxylink{struct_order}{Order} Book object. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_limit_order_book_a1a8aef2200de8232d1e78cea8ab5240b}{has\+Ask\+Orders}} () const
 \begin{DoxyCompactList}\small\item\em Checks whether the Limit \doxylink{struct_order}{Order} book has any active ask limit orders. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_limit_order_book_a4ec9713547932169226efe0a26d52748}{has\+Bid\+Orders}} () const
@@ -27,7 +30,7 @@ double \mbox{\hyperlink{class_limit_order_book_ae740cd0cbe22466f82eb517998b06530
 double \mbox{\hyperlink{class_limit_order_book_ae904c4014cd8c9816283b37404d1a81a}{get\+Volume\+Imbalance}} () const
 \begin{DoxyCompactList}\small\item\em Get the volume imbalance of the book. Positive if there are more asks than bids, negative if there are more bids than asks. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_limit_order_book_aea9cac90c4c48dad85a390f74c6535cd}{get\+Spread}} () const
-\begin{DoxyCompactList}\small\item\em Get the spread between ask and bid. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Get the spread between ask and bid. If there are no ask or bid prices, returns 0. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_limit_order_book_ab92cbe516839515e17dac79c322706bb}{get\+\_\+total\+\_\+volume}} () const
 \begin{DoxyCompactList}\small\item\em gets the total volume in the book. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_limit_order_book_a3e1ac4c7b7ced399c5c75e778326f2d7}{get\+\_\+total\+\_\+ask\+\_\+volume}} () const
@@ -170,7 +173,7 @@ the number of orders which are currently in either ask\+\_\+prices, bid\+\_\+pri
 
 
 
-Get the spread between ask and bid. 
+Get the spread between ask and bid. If there are no ask or bid prices, returns 0. 
 
 \begin{DoxyReturn}{Returns}
 double\+: the difference between the ask price and the bid price. 
