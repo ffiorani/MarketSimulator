@@ -3,7 +3,6 @@ find_package(Doxygen)
 # Add a target to generate API documentation with Doxygen
 
 if(DOXYGEN_FOUND)
-
     add_custom_target(
         docs
         ${DOXYGEN_EXECUTABLE}

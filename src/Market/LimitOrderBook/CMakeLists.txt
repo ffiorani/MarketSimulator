@@ -1,4 +1,4 @@
-add_library(LimitOrderBookLib STATIC LimitOrderBook.h LimitOrderBook.cc)
+add_library(LimitOrderBookLib STATIC LimitOrderBook.h LimitOrderBook.cc constants.cc)
 
 set(INCLUDE_DIRS "./")
 

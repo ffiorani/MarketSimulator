@@ -6,19 +6,43 @@
 \Hypertarget{class_market_a3aa858375d1fa608d04499670b498156}\label{class_market_a3aa858375d1fa608d04499670b498156} 
 {\bfseries Market} (unsigned int num\+Traders)
 \item 
-\Hypertarget{class_market_af50d2a0d2769c4a9dfe18cd145243386}\label{class_market_af50d2a0d2769c4a9dfe18cd145243386} 
-double {\bfseries print\+Market\+Data} () const
+\Hypertarget{class_market_a3f5c287ffe8451e2859cb9102a1dba94}\label{class_market_a3f5c287ffe8451e2859cb9102a1dba94} 
+unsigned int {\bfseries get\+Num\+Traders} () const
 \item 
-void \mbox{\hyperlink{class_market_ab556feb7189c601987dd0dd47255debe}{simulate\+Market}} (unsigned int num\+Steps)
+\Hypertarget{class_market_a3f5d3989a16e258bad2353ce9c2a93f3}\label{class_market_a3f5d3989a16e258bad2353ce9c2a93f3} 
+std\+::string {\bfseries print\+Market\+Summary} () const
+\item 
+const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \& \mbox{\hyperlink{class_market_abfdbae7949fef0340b219a4d1e0b7d82}{get\+Limit\+Order\+Book}} () const
+\begin{DoxyCompactList}\small\item\em Get the Limit \doxylink{struct_order}{Order} Book object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_market_a0398c620113937712fe96f4bb8795d09}{simulate\+Market}} (unsigned int num\+Steps, std\+::vector$<$ double $>$ \&price\+History)
 \begin{DoxyCompactList}\small\item\em Runs the market simulation for @num\+Steps timesteps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_market_a2f6cad727a6c018c49615aeff9a6788a}\label{class_market_a2f6cad727a6c018c49615aeff9a6788a} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{class_market}{Market}} \&market)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{class_market_ab556feb7189c601987dd0dd47255debe}\label{class_market_ab556feb7189c601987dd0dd47255debe} 
+\Hypertarget{class_market_abfdbae7949fef0340b219a4d1e0b7d82}\label{class_market_abfdbae7949fef0340b219a4d1e0b7d82} 
+\index{Market@{Market}!getLimitOrderBook@{getLimitOrderBook}}
+\index{getLimitOrderBook@{getLimitOrderBook}!Market@{Market}}
+\doxysubsubsection{\texorpdfstring{getLimitOrderBook()}{getLimitOrderBook()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \& Market\+::get\+Limit\+Order\+Book (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the Limit \doxylink{struct_order}{Order} Book object. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\Hypertarget{class_market_a0398c620113937712fe96f4bb8795d09}\label{class_market_a0398c620113937712fe96f4bb8795d09} 
 \index{Market@{Market}!simulateMarket@{simulateMarket}}
 \index{simulateMarket@{simulateMarket}!Market@{Market}}
 \doxysubsubsection{\texorpdfstring{simulateMarket()}{simulateMarket()}}
-{\footnotesize\ttfamily void Market\+::simulate\+Market (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+Steps }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Market\+::simulate\+Market (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+Steps,  }\item[{std\+::vector$<$ double $>$ \&}]{price\+History }\end{DoxyParamCaption})}
 
 
 
@@ -31,7 +55,6 @@ Runs the market simulation for @num\+Steps timesteps.
 \end{DoxyParams}
 
 
-The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/Market.\+h\item 
-/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/Market.\+cc\end{DoxyCompactItemize}
+/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/market.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,140 @@
+\doxysection{Market\+Player.\+h}
+\hypertarget{_market_player_8h_source}{}\label{_market_player_8h_source}\index{/Users/francescofiorani/doc/MarketSimulator/src/Market/MarketPlayer/MarketPlayer.h@{/Users/francescofiorani/doc/MarketSimulator/src/Market/MarketPlayer/MarketPlayer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}constants.cc"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}};}
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_order}{Order}};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{double}\ cash;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{double}\ stock;}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}();}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&);}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&);}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&\ operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ \&);}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_market_player}{MarketPlayer}}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ numCurrTraders;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ id;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ actualPortfolio;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_portfolio}{Portfolio}}\ portfolioIfOrdersMatched;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ connectionSpeed;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ riskAversion;}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ newsResponsiveness;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ std::list<std::shared\_ptr<Order>>\ buyOrders;}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ std::list<std::shared\_ptr<Order>>\ sellOrders;}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ trading\ methods\ *************/}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeProbabilityOfTrading(\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&,\ \textcolor{keywordtype}{double})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeCashToSpend(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeStockToBuy(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&,\ \textcolor{keywordtype}{double})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeCashToReceive(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeStockToSell(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&,\ \textcolor{keywordtype}{double})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ determineIfBuyOrSell(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ determineIfLimitOrder(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computePrice(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&,\ \textcolor{keywordtype}{bool})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ computeVolume(\textcolor{keywordtype}{double},\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&,\ \textcolor{keywordtype}{bool},\ \textcolor{keywordtype}{double})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ prepareMarketOrder(std::shared\_ptr<Order>\ orderPtr,\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&\ limitOrderBook);}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ delete\ order\ methods\ *************/}}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ currently\ not\ allowing\ traders\ to\ change\ or\ partially\ delete\ active\ orders,\ without\ placing\ an\ opposite\ limit\ order\ or\ a\ market\ order}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ bool\ determineLimitOrMarket(double,\ LimitOrderBook\ \&);}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ deleteAllOrders(\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&);}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ deleteAllBuyOrders(\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&);}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ deleteAllSellOrders(\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ deleteOldestOrders(\textcolor{keywordtype}{double}\ volume,\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&\ limitOrderBook,\ \textcolor{keywordtype}{bool}\ isBuy);}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ deleteActiveOrder(std::shared\_ptr<Order>,\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&);}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_player_a89fb7c2b373638bc36e2d0e457d352fa}{deleteActiveOrder}}(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ constructors\ *************/}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_market_player_a0252d8223ce1b2afefbcb46cbb3f947b}{MarketPlayer}}();}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_market_player_a94e6d0c6bc6ca0daba9ef4c214a9dcbe}{\string~MarketPlayer}}()\ \{\ numCurrTraders-\/-\/;\ \}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ getters\ *************/}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_a71ed44a3d242b6d35379d958eea3afbb}{getTotalWealth}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_market_player}{MarketPlayer}}\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_af58d3f4be1f2a9dd3fa1149fc1dc2761}{getWealthIfOrdersMatched}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_market_player}{MarketPlayer}}\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_a765de7a0ca3ad5c30b89d552e07d2163}{getCash}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_adab36710c6b1de415b0ca458ddbdec27}{getCashIfOrdersMatched}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_market_player_a805f2416051975efb7d540bfc2da7d32}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_aa277e1bb66902b6fc0505952421b632d}{getShares}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_ac81b42f425060e86d96ff111834ea417}{getSharesIfOrdersMatched}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ std::list<std::shared\_ptr<Order>>\ \textcolor{keyword}{const}\ \&\ \mbox{\hyperlink{class_market_player_aab3fd703dd1ac20eede51aaf4ba36c5d}{getBuyOrders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ std::list<std::shared\_ptr<Order>>\ \textcolor{keyword}{const}\ \&\ \mbox{\hyperlink{class_market_player_a93d49b3d6dabbe93049d4a44a42e4fcb}{getSellOrders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00384\ }
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_market_player_af7b9e133a5d4683f4d203dc345cbed85}{getNumCurrTraders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ helper\ functions\ *************/}}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_market_player_aed5645538e0be9d8a9cb521ec64a9172}{generateTimestamp}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_market_player_a9df164aab4ecab6879db3e46db8f94a5}{canTrade}}(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{bool})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ addOrder(std::shared\_ptr<Order>\ orderPtr);}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_player_aa1963066c6e086d406150c19713bb986}{updateActualPortfolio}}(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double});}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_player_a2d7ccf9155e0db4773b4491733c576ad}{updatePortfolioIfOrdersMatched}}(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_market_player_a5d9a3d80748316321a8176aba5fe35f1}{updatePortfolioIfOrdersMatched}}(std::shared\_ptr<Order>\ orderPtr);}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \textcolor{comment}{\ \ \ \ \ \ \ \ /*************\ trading\ functions\ *************/}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ std::shared\_ptr<Order>\ \mbox{\hyperlink{class_market_player_aa9069c1d4fc8e23c37e237f032d1e130}{trade}}(\textcolor{keywordtype}{double}\ news,\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}},}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<MarketPlayer>\ traderPtr);}
+\DoxyCodeLine{00460\ \};}
+
+\end{DoxyCode}

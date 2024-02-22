@@ -4,7 +4,7 @@
 #include "LimitOrderBook.h"
 #include "MarketPlayer.h"
 
-// Implementing Order methods
+/***************************** ORDER METHODS *****************************/
 
 Order::Order(double price, double volume, bool isBuy, bool isLimit, std::shared_ptr<MarketPlayer> trader) :
                         price {price}, volume {volume}, isBuy {isBuy}, isLimit {isLimit}, trader{trader} {}
@@ -66,7 +66,7 @@ void Order::addToCurrentPrice(double volumeAdjustedOutcome) {
 
 
 
-// Implementing LimitOrderBook methods
+/***************************** LIMIT ORDER BOOK METHODS *****************************/
 
 bool LimitOrderBook::hasAskOrders() const {
     return !ask_prices.empty();
@@ -107,17 +107,37 @@ double LimitOrderBook::get_VWAP() const {
     return vwap;
 }
 
+double LimitOrderBook::get_total_ask_volume() const {
+    return ask_prices.getTotalVolume();
+}
+
+double LimitOrderBook::get_total_bid_volume() const {
+    return bid_prices.getTotalVolume();
+}
+
 double LimitOrderBook::get_total_volume() const {
-    return totalVolume;
+    return ask_prices.getTotalVolume() + bid_prices.getTotalVolume();
+}
+
+double LimitOrderBook::getVolumeImbalance() const {
+    return ask_prices.getTotalVolume() - bid_prices.getTotalVolume();
 }
 
 double LimitOrderBook::getSpread() const {
-    return ask_prices.top() -> price - bid_prices.top() -> price;
+    if (ask_prices.empty() || bid_prices.empty())
+        return 0.;
+
+    return get_ask() - get_bid();
 }
 
 int LimitOrderBook::getNumActiveOrders() const {
     return activeOrders.size() + ask_prices.size() + bid_prices.size();
 }
+
+
+
+
+// helper functions for matchOrders
 
 void LimitOrderBook::placeLimitOrder(std::shared_ptr<Order> limitOrderPtr) {
 
@@ -128,16 +148,10 @@ void LimitOrderBook::placeLimitOrder(std::shared_ptr<Order> limitOrderPtr) {
         }
 }
 
-// this is duplicated by the addOrder method
-void LimitOrderBook::appendMarketOrder(std::shared_ptr<Order> marketOrderPtr) {
-    activeOrders.push_back(marketOrderPtr);
-}
-
-// helper functions for matchOrders
-
 void LimitOrderBook::addOrder(std::shared_ptr<Order> orderPtr) {
     activeOrders.push_back(orderPtr);
 }
+
 
 void LimitOrderBook::matchOrders() {
     if (activeOrders.empty())
@@ -146,51 +160,65 @@ void LimitOrderBook::matchOrders() {
     std::list<std::shared_ptr<Order>> RemainingActiveMarketOrders {};
     // compute vwap at each step
     double vwap {};
-
-    // getting pointers to the top of the queues, if they exists
+    double totalTimeStepVolume {};
 
     // iterate through all the active orders;
-    auto it {activeOrders.begin()};
-    for (; it != activeOrders.end(); it++)
+    for (auto orderPtr: activeOrders)
     {
-        std::pair<double, double> volumeAndTransaction {};
-        if ((*it) -> isBuy)
-        {
-            volumeAndTransaction = walkTheBook(*it, ask_prices);
-        } else {
-            volumeAndTransaction = walkTheBook(*it, bid_prices);
-        }
+        assert(orderPtr != nullptr);
 
-        double currVolume {volumeAndTransaction.first};
-        double currTransaction {volumeAndTransaction.second};
+        if (auto currTrader = ((orderPtr) -> trader).lock()) {
+            std::pair<double, double> volumeAndTransaction {};
 
-        // update the price of the limit order book
-        // updateBookPrices(currTransaction, currVolume);
-
-        // update total volume
-        totalVolume += currVolume;
-
-        // update VWAP price
-        vwap += currTransaction;
-
-        // if the order is not fully matched, update the order and append it to the limit order book
-        if (currVolume > 0) {
-            // update volume of the order
-            (*it) -> updateOrderVolume(currVolume);
-
-            // if limit order, append to limit order book
-            if ((*it) -> isLimit)
+            if ((orderPtr) -> isBuy)
             {
-                placeLimitOrder(*it);
-
-            } else { // else append to the activeOrders
-                RemainingActiveMarketOrders.push_front(*it);
+                volumeAndTransaction = walkTheBook(orderPtr, ask_prices);
+            } else {
+                volumeAndTransaction = walkTheBook(orderPtr, bid_prices);
             }
+
+            double unmatchedVolume {volumeAndTransaction.first};
+            double currTransaction {volumeAndTransaction.second};
+
+
+            // update VWAP price
+            totalTimeStepVolume += (orderPtr) -> volume - unmatchedVolume;
+            vwap += currTransaction;
+
+            // update VWAP and prices, as they'll be used in the price change
+            if (totalTimeStepVolume > 0)
+                updateVWAP(vwap / totalTimeStepVolume);
+
+
+            // update the price of the limit order book
+            updateBookPrices();
+
+            // if the order is not fully matched, update the order and append it to the limit order book
+            if (unmatchedVolume > 0) {
+                // update volume of the order
+                (orderPtr) -> updateOrderVolume(unmatchedVolume);
+
+                // append order to the active orders of the trader
+                currTrader -> addOrder(orderPtr);
+
+                // update fictitious portfolio
+                currTrader -> updatePortfolioIfOrdersMatched((orderPtr) -> price, unmatchedVolume, !((orderPtr) -> isBuy));
+
+                // if limit order, append to limit order book
+                if ((orderPtr) -> isLimit)
+                {
+                    placeLimitOrder(orderPtr);
+
+                } else { // else append to the activeOrders
+                    RemainingActiveMarketOrders.push_back(orderPtr);
+                }
+            }
+        } else {
+            // if the trader is no longer in the market, delete the order
+            deleteOrder(orderPtr);
         }
     }
 
-    // update VWAP and prices
-    updateVWAP(vwap);
 
     // update active orders
     activeOrders.clear();
@@ -202,11 +230,12 @@ void LimitOrderBook::updateVWAP(double newVWAP) {
     vwap = newVWAP;
 }
 
-// should we also make it depend more directly on the difference between total ask volume and total bid volume?
-void LimitOrderBook::updateBookPrices(double transaction, double volume){
-    double volumeAdjustedDifferential {transaction / volume - get_mid_price()};
-    ask_prices.updatePrices(volumeAdjustedDifferential);
-    bid_prices.updatePrices(volumeAdjustedDifferential);
+void LimitOrderBook::updateBookPrices() {
+    double priceChange {(get_VWAP() - get_mid_price()) * PRICE_CHANGE_FACTOR +
+                        getVolumeImbalance() * VOLUME_PRICE_CHANGE_FACTOR};
+
+    ask_prices.updatePrices(priceChange);
+    bid_prices.updatePrices(priceChange);
 }
 
 
@@ -217,6 +246,17 @@ void LimitOrderBook::deleteLimitOrder(std::shared_ptr<Order> orderPtr) {
         bid_prices.remove(orderPtr);
     else
         ask_prices.remove(orderPtr);
+}
+
+void LimitOrderBook::deleteMarketOrder(std::shared_ptr<Order> orderPtr) {
+    activeOrders.remove(orderPtr);
+}
+
+void LimitOrderBook::deleteOrder(std::shared_ptr<Order> orderPtr) {
+    if (orderPtr -> isLimit)
+        deleteLimitOrder(orderPtr);
+    else
+        deleteMarketOrder(orderPtr);
 }
 
 std::ostream & operator<<(std::ostream & os, const LimitOrderBook & book) {

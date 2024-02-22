@@ -1,0 +1,156 @@
+\doxysection{custom\+\_\+priority\+\_\+queue\texorpdfstring{$<$}{<} T, S \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classcustom__priority__queue}{}\label{classcustom__priority__queue}\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+
+
+A priority queue that inherits from the STL priority\+\_\+queue It allows to remove elements from the queue It also allows to update the prices of the orders by a certain factor by iterating over the underlying container.  
+
+
+
+
+{\ttfamily \#include $<$Limit\+Order\+Book.\+h$>$}
+
+Inheritance diagram for custom\+\_\+priority\+\_\+queue\texorpdfstring{$<$}{<} T, S \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcustom__priority__queue}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcustom__priority__queue_acc259b74cad2ae5c2372c8b7c3675070}\label{classcustom__priority__queue_acc259b74cad2ae5c2372c8b7c3675070} 
+{\bfseries custom\+\_\+priority\+\_\+queue} ()
+\begin{DoxyCompactList}\small\item\em Assigns 0 to the total volume. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classcustom__priority__queue_a94d11597c55dce7a6237d5e7a6245b85}{get\+Total\+Volume}} () const
+\begin{DoxyCompactList}\small\item\em returns the total volume of the queue \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcustom__priority__queue_a564de845733a5da1bf0c8080eb7a1cc8}{pop}} ()
+\begin{DoxyCompactList}\small\item\em pops the top element of the queue and updates the total volume \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcustom__priority__queue_a26ef4dcdb5c04b7214e6c69238d6ffe3}{push}} (const T \&value)
+\begin{DoxyCompactList}\small\item\em updates the volume of the queue and pushes the input parameter into the queue \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classcustom__priority__queue_a47230ed64a1a175ab7e8b97753ccba54}{remove}} (const T \&value)
+\begin{DoxyCompactList}\small\item\em iterates through the container and removes the order pointer that matches the input parameter \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcustom__priority__queue_acc4ddb9380ba95c2ca6e9bb40e21d429}{update\+Prices}} (double price\+Change)
+\begin{DoxyCompactList}\small\item\em iterates through the container and updates the prices of the orders by the input parameter \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcustom__priority__queue_ab40910a30df95730c6f0140c76a3b3c2}{update\+Total\+Volume}} (double volume\+Change)
+\begin{DoxyCompactList}\small\item\em update total volume by the desired amount. Used when updating the orders -\/ say if an order is partially matched. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcustom__priority__queue_abec4118ceca2c8b0052ecac17ee28b90}\label{classcustom__priority__queue_abec4118ceca2c8b0052ecac17ee28b90} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}} \&pq)
+\begin{DoxyCompactList}\small\item\em Prints out the prices and volumes of the orders in the queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename S$>$\newline
+class custom\+\_\+priority\+\_\+queue$<$ T, S $>$}
+A priority queue that inherits from the STL priority\+\_\+queue It allows to remove elements from the queue It also allows to update the prices of the orders by a certain factor by iterating over the underlying container. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Specifically designed to work with shared pointers to \doxylink{struct_order}{Order} objects \\
+\hline
+{\em S} & Specifically designed to be used with the \doxylink{struct_ptr_less}{Ptr\+Less} and \doxylink{struct_ptr_greater}{Ptr\+Greater} structs \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcustom__priority__queue_a94d11597c55dce7a6237d5e7a6245b85}\label{classcustom__priority__queue_a94d11597c55dce7a6237d5e7a6245b85} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!getTotalVolume@{getTotalVolume}}
+\index{getTotalVolume@{getTotalVolume}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{getTotalVolume()}{getTotalVolume()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+double \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::get\+Total\+Volume (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns the total volume of the queue 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{classcustom__priority__queue_a564de845733a5da1bf0c8080eb7a1cc8}\label{classcustom__priority__queue_a564de845733a5da1bf0c8080eb7a1cc8} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!pop@{pop}}
+\index{pop@{pop}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+void \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+pops the top element of the queue and updates the total volume 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{classcustom__priority__queue_a26ef4dcdb5c04b7214e6c69238d6ffe3}\label{classcustom__priority__queue_a26ef4dcdb5c04b7214e6c69238d6ffe3} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!push@{push}}
+\index{push@{push}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+void \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::push (\begin{DoxyParamCaption}\item[{const T \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+updates the volume of the queue and pushes the input parameter into the queue 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & T\& the order to be inserted \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcustom__priority__queue_a47230ed64a1a175ab7e8b97753ccba54}\label{classcustom__priority__queue_a47230ed64a1a175ab7e8b97753ccba54} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!remove@{remove}}
+\index{remove@{remove}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+bool \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::remove (\begin{DoxyParamCaption}\item[{const T \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+iterates through the container and removes the order pointer that matches the input parameter 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & T\& the order to be removed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool true if the order was removed, false if it was not found 
+\end{DoxyReturn}
+\Hypertarget{classcustom__priority__queue_acc4ddb9380ba95c2ca6e9bb40e21d429}\label{classcustom__priority__queue_acc4ddb9380ba95c2ca6e9bb40e21d429} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!updatePrices@{updatePrices}}
+\index{updatePrices@{updatePrices}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{updatePrices()}{updatePrices()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+void \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::update\+Prices (\begin{DoxyParamCaption}\item[{double}]{price\+Change }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+iterates through the container and updates the prices of the orders by the input parameter 
+
+
+\begin{DoxyParams}{Parameters}
+{\em price\+Change} & the factor by which the prices are updated \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcustom__priority__queue_ab40910a30df95730c6f0140c76a3b3c2}\label{classcustom__priority__queue_ab40910a30df95730c6f0140c76a3b3c2} 
+\index{custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}!updateTotalVolume@{updateTotalVolume}}
+\index{updateTotalVolume@{updateTotalVolume}!custom\_priority\_queue$<$ T, S $>$@{custom\_priority\_queue$<$ T, S $>$}}
+\doxysubsubsection{\texorpdfstring{updateTotalVolume()}{updateTotalVolume()}}
+{\footnotesize\ttfamily template$<$typename T , typename S $>$ \\
+void \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ T, S $>$\+::update\+Total\+Volume (\begin{DoxyParamCaption}\item[{double}]{volume\+Change }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+update total volume by the desired amount. Used when updating the orders -\/ say if an order is partially matched. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/\+Limit\+Order\+Book/Limit\+Order\+Book.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,338 @@
+\doxysection{Market\+Player Class Reference}
+\hypertarget{class_market_player}{}\label{class_market_player}\index{MarketPlayer@{MarketPlayer}}
+
+
+Class modelling traders in the market. Each trader has a unique id, a portfolio, a total wealth, a connection speed and a news responsiveness. The trader can place orders in the market, and their portfolio is updated when their orders are matched. The trader can also delete their active orders. The trader follows a set of rules to determine what orders to place, based on the information available in the \doxylink{class_limit_order_book}{Limit\+Order\+Book} and the news.  
+
+
+
+
+{\ttfamily \#include $<$Market\+Player.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_market_player_a89fb7c2b373638bc36e2d0e457d352fa}{delete\+Active\+Order}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$)
+\begin{DoxyCompactList}\small\item\em Deletes an active order of @amount\+Of\+Shares, if present; currently only deletes the shared ptr stored by the @\+Market\+Player, not the one held by the @\+Limit\+Order\+Book. Returns true if the \doxylink{class_market}{Market} \doxylink{struct_order}{Order} has been completely deleted. Currently does not affect price or decision making of other traders. \end{DoxyCompactList}\item 
+\Hypertarget{class_market_player_a0252d8223ce1b2afefbcb46cbb3f947b}\label{class_market_player_a0252d8223ce1b2afefbcb46cbb3f947b} 
+{\bfseries Market\+Player} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{class_market}{Market} Player object. Initializes the total wealth of the trader as determined by the INITIAL\+\_\+\+WEALTH constant, and randomly assigns the amount of cash and stock in the trader\textquotesingle{}s portfolio. Also randomly assigns the connection speed and news responsiveness of the trader. Finally, assigns a unique id to the trader and increments the number of traders that have been created. \end{DoxyCompactList}\item 
+\Hypertarget{class_market_player_a94e6d0c6bc6ca0daba9ef4c214a9dcbe}\label{class_market_player_a94e6d0c6bc6ca0daba9ef4c214a9dcbe} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Market\+Player} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \doxylink{class_market}{Market} Player object. Decrements the number of traders that have been created. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_a71ed44a3d242b6d35379d958eea3afbb}{get\+Total\+Wealth}} (const \mbox{\hyperlink{class_market_player}{Market\+Player}} \&, const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&) const
+\begin{DoxyCompactList}\small\item\em Get the total wealth of the trader. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_af58d3f4be1f2a9dd3fa1149fc1dc2761}{get\+Wealth\+If\+Orders\+Matched}} (const \mbox{\hyperlink{class_market_player}{Market\+Player}} \&, const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&) const
+\begin{DoxyCompactList}\small\item\em Get the wealth of the trader if all their orders are matched. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_a765de7a0ca3ad5c30b89d552e07d2163}{get\+Cash}} () const
+\begin{DoxyCompactList}\small\item\em Get the amount of cash in the trader\textquotesingle{}s portfolio. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_adab36710c6b1de415b0ca458ddbdec27}{get\+Cash\+If\+Orders\+Matched}} () const
+\begin{DoxyCompactList}\small\item\em Get the amount of cash in the trader\textquotesingle{}s portfolio if all their orders are matched. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_market_player_a805f2416051975efb7d540bfc2da7d32}{get\+Id}} () const
+\begin{DoxyCompactList}\small\item\em Get the unique id of the trader. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_aa277e1bb66902b6fc0505952421b632d}{get\+Shares}} () const
+\begin{DoxyCompactList}\small\item\em Get the amount of stock in the trader\textquotesingle{}s portfolio. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_ac81b42f425060e86d96ff111834ea417}{get\+Shares\+If\+Orders\+Matched}} () const
+\begin{DoxyCompactList}\small\item\em Get the amount of stock in the trader\textquotesingle{}s portfolio if all their orders are matched. \end{DoxyCompactList}\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ const \& \mbox{\hyperlink{class_market_player_aab3fd703dd1ac20eede51aaf4ba36c5d}{get\+Buy\+Orders}} () const
+\begin{DoxyCompactList}\small\item\em Get the set of active unmatched buy orders of the trader. Currently not used. Includes \doxylink{class_market}{Market} Orders. \end{DoxyCompactList}\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ const \& \mbox{\hyperlink{class_market_player_a93d49b3d6dabbe93049d4a44a42e4fcb}{get\+Sell\+Orders}} () const
+\begin{DoxyCompactList}\small\item\em Get the set of active unmatched sell orders of the trader. Currently not used. Includes \doxylink{class_market}{Market} Orders. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_market_player_af7b9e133a5d4683f4d203dc345cbed85}{get\+Num\+Curr\+Traders}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of traders that have been created. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_market_player_aed5645538e0be9d8a9cb521ec64a9172}{generate\+Timestamp}} () const
+\begin{DoxyCompactList}\small\item\em Generates a timestamp for the trader based on their @connection\+Speed. The timestamp is used to determine when the trader places an order within the time frame of the market. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_market_player_a9df164aab4ecab6879db3e46db8f94a5}{can\+Trade}} (double, double, bool) const
+\begin{DoxyCompactList}\small\item\em Determines if the trader can afford the transaction about to take place. Used by Walk\+The\+Book. If false, only partial matching occurs. \end{DoxyCompactList}\item 
+\Hypertarget{class_market_player_aa97e7b231e208812c32e2dce037dc9a4}\label{class_market_player_aa97e7b231e208812c32e2dce037dc9a4} 
+void {\bfseries add\+Order} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ order\+Ptr)
+\item 
+void \mbox{\hyperlink{class_market_player_aa1963066c6e086d406150c19713bb986}{update\+Actual\+Portfolio}} (double, double, double)
+\begin{DoxyCompactList}\small\item\em Updates the portfolio of the trader, based on the transaction that has been made in the market. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_market_player_a2d7ccf9155e0db4773b4491733c576ad}{update\+Portfolio\+If\+Orders\+Matched}} (double, double, bool)
+\begin{DoxyCompactList}\small\item\em Updates the hypothetical portfolio of the trader when a Limit \doxylink{struct_order}{Order} is placed. Used in the delete methods, the trade method, and the \doxylink{class_limit_order_book_a6f9916e4333c2ec1316988aed4565a67}{Limit\+Order\+Book\+::match\+Orders} method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_market_player_a5d9a3d80748316321a8176aba5fe35f1}{update\+Portfolio\+If\+Orders\+Matched}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ order\+Ptr)
+\begin{DoxyCompactList}\small\item\em Updates the hypothetical portfolio of the trader when an order is deleted. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ \mbox{\hyperlink{class_market_player_aa9069c1d4fc8e23c37e237f032d1e130}{trade}} (double news, \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&\mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}}, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_market_player}{Market\+Player}} $>$ trader\+Ptr)
+\begin{DoxyCompactList}\small\item\em Takes the @trader\+Ptr as input, who decides what order they want to place based on the information available in the @\+Limit\+Order\+Book and the @news. Also checks whether the order would bankrupt the trader, and if so, returns a nullptr. Otherwise, returns the order they want to place. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class modelling traders in the market. Each trader has a unique id, a portfolio, a total wealth, a connection speed and a news responsiveness. The trader can place orders in the market, and their portfolio is updated when their orders are matched. The trader can also delete their active orders. The trader follows a set of rules to determine what orders to place, based on the information available in the \doxylink{class_limit_order_book}{Limit\+Order\+Book} and the news. 
+
+Traders will avoid bankruptcy by not placing orders that would make them go bankrupt at the time. However, as the price changes and because market orders are placed, traders can go bankrupt. For now, the market will not stop when a trader goes bankrupt, but the trader will not be able to place any more orders. The orders they have currently on the market that they cannot match will only disappear when 1) they are partially matched by some other order being placed 2) the trader decides to delete them in order to place a new order 3) the trader wants the portfolio\+If\+Orders\+Matched, which determines whether they can trade or not, to be updated.
+
+A possible reason for bankruptcy other than price change is the fact that currently \doxylink{class_market}{Market} orders will be matched at at market price rather than the trader\textquotesingle{}s estimation, which is currently done in the same way as Limit orders. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_market_player_a9df164aab4ecab6879db3e46db8f94a5}\label{class_market_player_a9df164aab4ecab6879db3e46db8f94a5} 
+\index{MarketPlayer@{MarketPlayer}!canTrade@{canTrade}}
+\index{canTrade@{canTrade}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{canTrade()}{canTrade()}}
+{\footnotesize\ttfamily bool Market\+Player\+::can\+Trade (\begin{DoxyParamCaption}\item[{double}]{,  }\item[{double}]{,  }\item[{bool}]{ }\end{DoxyParamCaption}) const}
+
+
+
+Determines if the trader can afford the transaction about to take place. Used by Walk\+The\+Book. If false, only partial matching occurs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em price} & Price at which the transaction is about to take place. \\
+\hline
+{\em volume} & Volume of the transaction. \\
+\hline
+{\em is\+Buy} & Whether the transaction is a buy or sell. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_a89fb7c2b373638bc36e2d0e457d352fa}\label{class_market_player_a89fb7c2b373638bc36e2d0e457d352fa} 
+\index{MarketPlayer@{MarketPlayer}!deleteActiveOrder@{deleteActiveOrder}}
+\index{deleteActiveOrder@{deleteActiveOrder}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{deleteActiveOrder()}{deleteActiveOrder()}}
+{\footnotesize\ttfamily void Market\+Player\+::delete\+Active\+Order (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$}]{ }\end{DoxyParamCaption})}
+
+
+
+Deletes an active order of @amount\+Of\+Shares, if present; currently only deletes the shared ptr stored by the @\+Market\+Player, not the one held by the @\+Limit\+Order\+Book. Returns true if the \doxylink{class_market}{Market} \doxylink{struct_order}{Order} has been completely deleted. Currently does not affect price or decision making of other traders. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em order\+Ptr} & Pointer to the order being deleted \\
+\hline
+{\em limit\+Order\+Book} & \doxylink{class_limit_order_book}{Limit\+Order\+Book} \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_market_player_aed5645538e0be9d8a9cb521ec64a9172}\label{class_market_player_aed5645538e0be9d8a9cb521ec64a9172} 
+\index{MarketPlayer@{MarketPlayer}!generateTimestamp@{generateTimestamp}}
+\index{generateTimestamp@{generateTimestamp}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{generateTimestamp()}{generateTimestamp()}}
+{\footnotesize\ttfamily double Market\+Player\+::generate\+Timestamp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Generates a timestamp for the trader based on their @connection\+Speed. The timestamp is used to determine when the trader places an order within the time frame of the market. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_aab3fd703dd1ac20eede51aaf4ba36c5d}\label{class_market_player_aab3fd703dd1ac20eede51aaf4ba36c5d} 
+\index{MarketPlayer@{MarketPlayer}!getBuyOrders@{getBuyOrders}}
+\index{getBuyOrders@{getBuyOrders}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getBuyOrders()}{getBuyOrders()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ const  \& Market\+Player\+::get\+Buy\+Orders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the set of active unmatched buy orders of the trader. Currently not used. Includes \doxylink{class_market}{Market} Orders. 
+
+\begin{DoxyReturn}{Returns}
+std\+::list$<$std\+::shared\+\_\+ptr$<$\+Order$>$$>$ 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_a765de7a0ca3ad5c30b89d552e07d2163}\label{class_market_player_a765de7a0ca3ad5c30b89d552e07d2163} 
+\index{MarketPlayer@{MarketPlayer}!getCash@{getCash}}
+\index{getCash@{getCash}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getCash()}{getCash()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Cash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the amount of cash in the trader\textquotesingle{}s portfolio. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_adab36710c6b1de415b0ca458ddbdec27}\label{class_market_player_adab36710c6b1de415b0ca458ddbdec27} 
+\index{MarketPlayer@{MarketPlayer}!getCashIfOrdersMatched@{getCashIfOrdersMatched}}
+\index{getCashIfOrdersMatched@{getCashIfOrdersMatched}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getCashIfOrdersMatched()}{getCashIfOrdersMatched()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Cash\+If\+Orders\+Matched (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the amount of cash in the trader\textquotesingle{}s portfolio if all their orders are matched. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_a805f2416051975efb7d540bfc2da7d32}\label{class_market_player_a805f2416051975efb7d540bfc2da7d32} 
+\index{MarketPlayer@{MarketPlayer}!getId@{getId}}
+\index{getId@{getId}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily int Market\+Player\+::get\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the unique id of the trader. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_af7b9e133a5d4683f4d203dc345cbed85}\label{class_market_player_af7b9e133a5d4683f4d203dc345cbed85} 
+\index{MarketPlayer@{MarketPlayer}!getNumCurrTraders@{getNumCurrTraders}}
+\index{getNumCurrTraders@{getNumCurrTraders}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getNumCurrTraders()}{getNumCurrTraders()}}
+{\footnotesize\ttfamily int Market\+Player\+::get\+Num\+Curr\+Traders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the number of traders that have been created. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_a93d49b3d6dabbe93049d4a44a42e4fcb}\label{class_market_player_a93d49b3d6dabbe93049d4a44a42e4fcb} 
+\index{MarketPlayer@{MarketPlayer}!getSellOrders@{getSellOrders}}
+\index{getSellOrders@{getSellOrders}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getSellOrders()}{getSellOrders()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ const  \& Market\+Player\+::get\+Sell\+Orders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the set of active unmatched sell orders of the trader. Currently not used. Includes \doxylink{class_market}{Market} Orders. 
+
+\begin{DoxyReturn}{Returns}
+std\+::list$<$std\+::shared\+\_\+ptr$<$\+Order$>$$>$ 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_aa277e1bb66902b6fc0505952421b632d}\label{class_market_player_aa277e1bb66902b6fc0505952421b632d} 
+\index{MarketPlayer@{MarketPlayer}!getShares@{getShares}}
+\index{getShares@{getShares}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getShares()}{getShares()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Shares (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the amount of stock in the trader\textquotesingle{}s portfolio. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_ac81b42f425060e86d96ff111834ea417}\label{class_market_player_ac81b42f425060e86d96ff111834ea417} 
+\index{MarketPlayer@{MarketPlayer}!getSharesIfOrdersMatched@{getSharesIfOrdersMatched}}
+\index{getSharesIfOrdersMatched@{getSharesIfOrdersMatched}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getSharesIfOrdersMatched()}{getSharesIfOrdersMatched()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Shares\+If\+Orders\+Matched (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the amount of stock in the trader\textquotesingle{}s portfolio if all their orders are matched. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_a71ed44a3d242b6d35379d958eea3afbb}\label{class_market_player_a71ed44a3d242b6d35379d958eea3afbb} 
+\index{MarketPlayer@{MarketPlayer}!getTotalWealth@{getTotalWealth}}
+\index{getTotalWealth@{getTotalWealth}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getTotalWealth()}{getTotalWealth()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Total\+Wealth (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_market_player}{Market\+Player}} \&}]{,  }\item[{const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&}]{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the total wealth of the trader. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_af58d3f4be1f2a9dd3fa1149fc1dc2761}\label{class_market_player_af58d3f4be1f2a9dd3fa1149fc1dc2761} 
+\index{MarketPlayer@{MarketPlayer}!getWealthIfOrdersMatched@{getWealthIfOrdersMatched}}
+\index{getWealthIfOrdersMatched@{getWealthIfOrdersMatched}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{getWealthIfOrdersMatched()}{getWealthIfOrdersMatched()}}
+{\footnotesize\ttfamily double Market\+Player\+::get\+Wealth\+If\+Orders\+Matched (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_market_player}{Market\+Player}} \&}]{,  }\item[{const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&}]{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the wealth of the trader if all their orders are matched. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_market_player_aa1963066c6e086d406150c19713bb986}\label{class_market_player_aa1963066c6e086d406150c19713bb986} 
+\index{MarketPlayer@{MarketPlayer}!updateActualPortfolio@{updateActualPortfolio}}
+\index{updateActualPortfolio@{updateActualPortfolio}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{updateActualPortfolio()}{updateActualPortfolio()}}
+{\footnotesize\ttfamily void Market\+Player\+::update\+Actual\+Portfolio (\begin{DoxyParamCaption}\item[{double}]{,  }\item[{double}]{,  }\item[{double}]{ }\end{DoxyParamCaption})}
+
+
+
+Updates the portfolio of the trader, based on the transaction that has been made in the market. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diff\+Price} & Price of the Limit order being placed, or the order being deleted. \\
+\hline
+{\em diff\+Volume} & Volume of the Limit order being placed, or the order being deleted. \\
+\hline
+{\em is\+Sell} & whether the Limit order being placed is a sell order, or the order being deleted is a buy order. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_market_player_a2d7ccf9155e0db4773b4491733c576ad}\label{class_market_player_a2d7ccf9155e0db4773b4491733c576ad} 
+\index{MarketPlayer@{MarketPlayer}!updatePortfolioIfOrdersMatched@{updatePortfolioIfOrdersMatched}}
+\index{updatePortfolioIfOrdersMatched@{updatePortfolioIfOrdersMatched}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{updatePortfolioIfOrdersMatched()}{updatePortfolioIfOrdersMatched()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Market\+Player\+::update\+Portfolio\+If\+Orders\+Matched (\begin{DoxyParamCaption}\item[{double}]{,  }\item[{double}]{,  }\item[{bool}]{ }\end{DoxyParamCaption})}
+
+
+
+Updates the hypothetical portfolio of the trader when a Limit \doxylink{struct_order}{Order} is placed. Used in the delete methods, the trade method, and the \doxylink{class_limit_order_book_a6f9916e4333c2ec1316988aed4565a67}{Limit\+Order\+Book\+::match\+Orders} method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diff\+Price} & Price of the Limit order being placed, or the order being deleted. \\
+\hline
+{\em diff\+Volume} & Volume of the Limit order being placed, or the order being deleted. \\
+\hline
+{\em is\+Sell} & whether the Limit order being placed is a sell order, or the order being deleted is a buy order. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_market_player_a5d9a3d80748316321a8176aba5fe35f1}\label{class_market_player_a5d9a3d80748316321a8176aba5fe35f1} 
+\index{MarketPlayer@{MarketPlayer}!updatePortfolioIfOrdersMatched@{updatePortfolioIfOrdersMatched}}
+\index{updatePortfolioIfOrdersMatched@{updatePortfolioIfOrdersMatched}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{updatePortfolioIfOrdersMatched()}{updatePortfolioIfOrdersMatched()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Market\+Player\+::update\+Portfolio\+If\+Orders\+Matched (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$}]{order\+Ptr }\end{DoxyParamCaption})}
+
+
+
+Updates the hypothetical portfolio of the trader when an order is deleted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em order\+Ptr} & \doxylink{struct_order}{Order} being deleted or matched. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{class_market_player_aa9069c1d4fc8e23c37e237f032d1e130}\label{class_market_player_aa9069c1d4fc8e23c37e237f032d1e130} 
+\index{MarketPlayer@{MarketPlayer}!trade@{trade}}
+\index{trade@{trade}!MarketPlayer@{MarketPlayer}}
+\doxysubsubsection{\texorpdfstring{trade}{trade}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ trade (\begin{DoxyParamCaption}\item[{double}]{news,  }\item[{\mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&}]{Limit\+Order\+Book,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_market_player}{Market\+Player}} $>$}]{trader\+Ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Takes the @trader\+Ptr as input, who decides what order they want to place based on the information available in the @\+Limit\+Order\+Book and the @news. Also checks whether the order would bankrupt the trader, and if so, returns a nullptr. Otherwise, returns the order they want to place. 
+
+\begin{DoxyReturn}{Returns}
+returns a shared pointer to the order they want to place or nullptr if they would go bankrupt or if the order is not valid.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em news} & Double representing the intensity of the news -\/ currently not used in the implementation \\
+\hline
+{\em \doxylink{class_limit_order_book}{Limit\+Order\+Book}} & \doxylink{class_limit_order_book}{Limit\+Order\+Book} \\
+\hline
+{\em trader\+Ptr} & Pointer to the trader placing the order \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::shared\+\_\+ptr$<$\+Order$>$ 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/\+Market\+Player/Market\+Player.\+h\end{DoxyCompactItemize}

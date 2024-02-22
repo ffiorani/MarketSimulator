@@ -1,0 +1,283 @@
+\doxysection{Limit\+Order\+Book.\+h}
+\hypertarget{_limit_order_book_8h_source}{}\label{_limit_order_book_8h_source}\index{/Users/francescofiorani/doc/MarketSimulator/src/Market/LimitOrderBook/LimitOrderBook.h@{/Users/francescofiorani/doc/MarketSimulator/src/Market/LimitOrderBook/LimitOrderBook.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}constants.cc"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}MarketPlayer.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*****************************\ ORDER\ STRUCT\ ******************************/}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_order}{Order}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ \textcolor{keywordtype}{double}\ price;}
+\DoxyCodeLine{00027\ \textcolor{keywordtype}{double}\ volume;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{bool}\ isBuy;}
+\DoxyCodeLine{00030\ \textcolor{keywordtype}{bool}\ isLimit;}
+\DoxyCodeLine{00031\ std::weak\_ptr<MarketPlayer>\ trader;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00038\ \mbox{\hyperlink{struct_order_a47087a9616fa590188c235414db58479}{Order}}(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{bool},\ \textcolor{keywordtype}{bool},\ std::shared\_ptr<MarketPlayer>);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_order_ae5311e81a8d9955bd2473522d7bcb21b}{updateOrderVolume}}(\textcolor{keywordtype}{double});}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_order_a9fa186ace1563f95c924d7003ec3a30c}{updateOrderPrice}}(\textcolor{keywordtype}{double});}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00057\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_order_a4e40c5a1df5da8b81d2a619116a589f5}{addToCurrentPrice}}(\textcolor{keywordtype}{double});}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00063\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_order_a62cd1773cdb90a405e9527a642f49618}{operator<}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_order}{Order}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00069\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_order_a39a66c088e0088e6c3331adf42989a36}{operator>}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_order}{Order}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{comment}{/*****************************\ CUSTOM\ PRIORITY\ QUEUE\ ******************************/}}
+\DoxyCodeLine{00083\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00084\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_ptr_less}{PtrLess}}}
+\DoxyCodeLine{00085\ \ \ \ \ :\ \textcolor{keyword}{public}\ std::\_\_binary\_function<T,\ T,\ bool>\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator()(\textcolor{keyword}{const}\ T\&\ left,\ \textcolor{keyword}{const}\ T\&\ right)\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((*left)\ <\ (*right));}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00099\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_ptr_greater}{PtrGreater}}}
+\DoxyCodeLine{00100\ \ \ \ \ :\ \textcolor{keyword}{public}\ std::\_\_binary\_function<T,\ T,\ bool>\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator()(\textcolor{keyword}{const}\ T\&\ left,\ \textcolor{keyword}{const}\ T\&\ right)\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((*left)\ >\ (*right));}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ S>}
+\DoxyCodeLine{00118\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue}}\ :\ \textcolor{keyword}{public}\ std::priority\_queue<T,\ std::vector<T>,\ S>}
+\DoxyCodeLine{00119\ \{}
+\DoxyCodeLine{00120\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{double}\ totalVolume;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00128\ \ \ \ \ \mbox{\hyperlink{classcustom__priority__queue_acc259b74cad2ae5c2372c8b7c3675070}{custom\_priority\_queue}}()\ :\ totalVolume(0.)\ \{\ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classcustom__priority__queue_a94d11597c55dce7a6237d5e7a6245b85}{getTotalVolume}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ totalVolume;}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcustom__priority__queue_a564de845733a5da1bf0c8080eb7a1cc8}{pop}}()\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ totalVolume\ -\/=\ \textcolor{keyword}{this}\ -\/>\ top()\ -\/>\ volume;}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this}\ -\/>\ priority\_queue::pop();}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcustom__priority__queue_a26ef4dcdb5c04b7214e6c69238d6ffe3}{push}}(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ totalVolume\ +=\ value\ -\/>\ volume;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this}\ -\/>\ priority\_queue::push(value);}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcustom__priority__queue_a47230ed64a1a175ab7e8b97753ccba54}{remove}}(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ std::find(\textcolor{keyword}{this}\ -\/>\ c.begin(),\ this\ -\/>\ c.end(),\ value);}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ \textcolor{keyword}{this}\ -\/>\ c.end())\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ totalVolume\ -\/=\ (*it)\ -\/>\ volume;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ \textcolor{keyword}{this}\ -\/>\ c.begin())\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deque\ the\ top\ element}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classcustom__priority__queue_a564de845733a5da1bf0c8080eb7a1cc8}{pop}}();}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ element\ and\ re-\/heap}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>c.erase(it);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ std::make\_heap(this-\/>c.begin(),\ this-\/>c.end(),\ this-\/>comp);}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcustom__priority__queue_acc4ddb9380ba95c2ca6e9bb40e21d429}{updatePrices}}(\textcolor{keywordtype}{double}\ priceChange)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ priceChange\ *=\ PRICE\_CHANGE\_FACTOR;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ orderPtr\ :\ \textcolor{keyword}{this}\ -\/>\ c)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ orderPtr\ -\/>\ addToCurrentPrice(priceChange);}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcustom__priority__queue_ab40910a30df95730c6f0140c76a3b3c2}{updateTotalVolume}}(\textcolor{keywordtype}{double}\ volumeChange)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ totalVolume\ +=\ volumeChange;}
+\DoxyCodeLine{00205\ \ \ \ \ \}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ void\ updateVolumes(double\ volumeChange)\ \{}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ for\ (auto\ orderPtr\ :\ this\ -\/>\ c)\ \{}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ orderPtr\ -\/>\ updateOrderVolume(volumeChange);}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ \mbox{\hyperlink{classcustom__priority__queue_abec4118ceca2c8b0052ecac17ee28b90}{operator<<}}(std::ostream\ \&\ os,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue}}\ \&\ pq)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ orderPtr\ :\ pq.c)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ os\ <<\ \textcolor{stringliteral}{"{}Price:\ "{}}\ <<\ orderPtr\ -\/>\ price\ <<\ \textcolor{stringliteral}{"{}\ Volume:\ "{}}\ <<\ orderPtr\ -\/>\ volume\ <<\ std::endl;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ os;}
+\DoxyCodeLine{00222\ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \};}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \textcolor{comment}{/*****************************\ LIMIT\ ORDER\ BOOK\ CLASS\ ******************************/}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00233\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \{}
+\DoxyCodeLine{00234\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordtype}{double}\ vwap;}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00246\ \ \ \ \ std::list<std::shared\_ptr<Order>>\ activeOrders;}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00252\ \ \ \ \ \mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue<std::shared\_ptr<Order>}},}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_ptr_greater}{PtrGreater<std::shared\_ptr<Order>}}>>\ ask\_prices;}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00259\ \ \ \ \ \mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue<std::shared\_ptr<Order>}},}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_ptr_less}{PtrLess<std::shared\_ptr<Order>}}>>\ bid\_prices;}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{//\ still\ to\ implement}}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{comment}{//\ ExecutionStrategy\ executionStrategy;}}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00279\ \ \ \ \ std::pair<double,\ double>\ walkTheBook(std::shared\_ptr<Order>\ orderPtr,\ T\ \&\ pricePQ)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pricePQ.empty())}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{orderPtr\ -\/>\ volume,\ 0.\};}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isOrderBuy\ \{orderPtr\ -\/>\ isBuy\};}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ assert(isOrderBuy\ !=\ pricePQ.top()\ -\/>\ isBuy);}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ volumeAdjustedOutcome\ \{0.\};}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ volumeToMatch\ \{orderPtr\ -\/>\ volume\};}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ currTrader\ =\ (orderPtr\ -\/>\ trader).lock();}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ priceCondition\ \{(!pricePQ.empty())\ \&\&}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (isOrderBuy\ ?\ (pricePQ.top()\ -\/>\ price)\ <=\ orderPtr\ -\/>\ price\ :}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (pricePQ.top()\ -\/>\ price)\ >=\ orderPtr\ -\/>\ price)\};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (volumeToMatch\ >\ 0.\ \&\&\ priceCondition)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bestOrder\ =\ pricePQ.top();}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ limitTrader\ =\ bestOrder\ -\/>\ trader.lock();}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ volumeToMatchWithBestOrder\ \{std::min(volumeToMatch,\ bestOrder\ -\/>\ volume)\};}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ deleteBestOrder\ \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ if\ the\ trader\ currently\ placing\ the\ order\ can\ trade\ the\ volume}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!(currTrader\ -\/>\ canTrade(volumeToMatchWithBestOrder,\ bestOrder\ -\/>\ price,\ orderPtr\ -\/>\ isBuy)))\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatch\ =\ 0.;\ \textcolor{comment}{//\ this\ exits\ the\ while\ loop\ and\ makes\ sure\ that\ matchOrders\ deletes\ the\ order}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (orderPtr\ -\/>\ isBuy)\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatchWithBestOrder\ =\ currTrader\ -\/>\ getCash()\ /\ bestOrder\ -\/>\ price;}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatchWithBestOrder\ =\ currTrader\ -\/>\ getShares();}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ if\ the\ trader\ with\ the\ order\ in\ the\ book\ can\ trade\ the\ volume}}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!(limitTrader\ -\/>\ canTrade(volumeToMatchWithBestOrder,\ bestOrder\ -\/>\ price,\ orderPtr\ -\/>\ isBuy)))\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deleteBestOrder\ =\ \textcolor{keyword}{true};\ \textcolor{comment}{//\ this\ makes\ sure\ that\ the\ limit\ order\ is\ deleted\ from\ the\ book}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bestOrder\ -\/>\ isBuy)\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatchWithBestOrder\ =\ limitTrader\ -\/>\ getCash()\ /\ bestOrder\ -\/>\ price;}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatchWithBestOrder\ =\ limitTrader\ -\/>\ getShares();}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//updating\ the\ portfolios.\ No\ need\ to\ update\ the\ fictitious\ portfolio\ here}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ currTrader\ -\/>\ updateActualPortfolio(volumeToMatchWithBestOrder,\ bestOrder\ -\/>\ price,\ orderPtr\ -\/>\ isBuy\ ?\ -\/1.\ :\ 1.);}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ limitTrader\ -\/>\ updateActualPortfolio(volumeToMatchWithBestOrder,\ bestOrder\ -\/>\ price,\ orderPtr\ -\/>\ isBuy\ ?\ 1.\ :\ -\/1.);}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ amount\ of\ volume\ of\ the\ order\ that\ still\ needs\ to\ be\ matched}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ volumeToMatch\ -\/=\ volumeToMatchWithBestOrder;}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (deleteBestOrder\ ||\ volumeToMatch\ >\ 0)\ \{\ \textcolor{comment}{//\ if\ the\ order\ is\ not\ fully\ matched,\ delete\ the\ best\ order}}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pricePQ.pop();}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limitTrader\ -\/>\ deleteActiveOrder(bestOrder);}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pricePQ.updateTotalVolume(-\/volumeToMatchWithBestOrder);}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bestOrder\ -\/>\ updateOrderVolume(bestOrder\ -\/>\ volume\ -\/\ volumeToMatchWithBestOrder);}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ add\ the\ amount\ of\ value\ matched}}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ volumeAdjustedOutcome\ +=\ volumeToMatchWithBestOrder\ *\ bestOrder\ -\/>\ price;}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ price\ condition}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ priceCondition\ =\ (!pricePQ.empty())\ \&\&}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (isOrderBuy\ ?\ (pricePQ.top()\ -\/>\ price)\ <=\ orderPtr\ -\/>\ price\ :}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (pricePQ.top()\ -\/>\ price)\ >=\ orderPtr\ -\/>\ price);}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ perhaps\ should\ update\ prices\ here?\ For\ higher\ precision}}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::pair<double,\ double>(std::max(volumeToMatch,\ 0.),\ volumeAdjustedOutcome);}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordtype}{void}\ placeLimitOrder(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordtype}{void}\ placeMarketOrder(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keywordtype}{void}\ deleteLimitOrder(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordtype}{void}\ deleteMarketOrder(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordtype}{void}\ updateVWAP(\textcolor{keywordtype}{double});}
+\DoxyCodeLine{00384\ }
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordtype}{void}\ updateBookPrices();}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_limit_order_book_a1a8aef2200de8232d1e78cea8ab5240b}{hasAskOrders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_limit_order_book_a4ec9713547932169226efe0a26d52748}{hasBidOrders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_acc3e9cbafd963124e3fe697adab00c02}{get\_ask}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_abf76502e3026dcca645abd955c28e826}{get\_bid}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_a31a74db4ad9ed85c1ad4bd70fdd6e640}{get\_mid\_price}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_ae740cd0cbe22466f82eb517998b06530}{get\_VWAP}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_ae904c4014cd8c9816283b37404d1a81a}{getVolumeImbalance}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_aea9cac90c4c48dad85a390f74c6535cd}{getSpread}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_ab92cbe516839515e17dac79c322706bb}{get\_total\_volume}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_a3e1ac4c7b7ced399c5c75e778326f2d7}{get\_total\_ask\_volume}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_limit_order_book_ab866142ce09c0a50b4dc519bb2c02c57}{get\_total\_bid\_volume}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00481\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_limit_order_book_a41da040fc2339145b10e54814ad69d6a}{getNumActiveOrders}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue<std::shared\_ptr<Order>}},}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_ptr_greater}{PtrGreater<std::shared\_ptr<Order>}}>>\ \&\ \mbox{\hyperlink{class_limit_order_book_a34ed4feb946fbf93c9d4319a675dc8f8}{getAskOrders}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ask\_prices;}
+\DoxyCodeLine{00490\ \ \ \ \ \}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcustom__priority__queue}{custom\_priority\_queue<std::shared\_ptr<Order>}},}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_ptr_less}{PtrLess<std::shared\_ptr<Order>}}>>\ \&\ \mbox{\hyperlink{class_limit_order_book_a4cf4a6287a6cf50238c30d9daf38de27}{getBidOrders}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bid\_prices;}
+\DoxyCodeLine{00499\ \ \ \ \ \}}
+\DoxyCodeLine{00500\ }
+\DoxyCodeLine{00506\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&\ \mbox{\hyperlink{class_limit_order_book_a901c41bb17798b3f3c2fbc01c5643e59}{operator<<}}(std::ostream\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_limit_order_book}{LimitOrderBook}}\ \&);}
+\DoxyCodeLine{00507\ }
+\DoxyCodeLine{00513\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_limit_order_book_a645aa1cfcd296e28ee92a60b3d809127}{addOrder}}(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00514\ }
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_limit_order_book_acc5e4c565d50ca19c28dbe705afbd7d4}{deleteOrder}}(std::shared\_ptr<Order>);}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_limit_order_book_a6f9916e4333c2ec1316988aed4565a67}{matchOrders}}();}
+\DoxyCodeLine{00532\ \};}
+
+\end{DoxyCode}

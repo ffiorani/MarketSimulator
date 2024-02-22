@@ -1,0 +1,237 @@
+\doxysection{Limit\+Order\+Book Class Reference}
+\hypertarget{class_limit_order_book}{}\label{class_limit_order_book}\index{LimitOrderBook@{LimitOrderBook}}
+
+
+class that models a limit order book. It has containers for ask prices, bid prices and rules for matching orders.  
+
+
+
+
+{\ttfamily \#include $<$Limit\+Order\+Book.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_limit_order_book_a1a8aef2200de8232d1e78cea8ab5240b}{has\+Ask\+Orders}} () const
+\begin{DoxyCompactList}\small\item\em Checks whether the Limit \doxylink{struct_order}{Order} book has any active ask limit orders. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_limit_order_book_a4ec9713547932169226efe0a26d52748}{has\+Bid\+Orders}} () const
+\begin{DoxyCompactList}\small\item\em Checks whether the Limit \doxylink{struct_order}{Order} book has any active bid limit orders. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_acc3e9cbafd963124e3fe697adab00c02}{get\+\_\+ask}} () const
+\begin{DoxyCompactList}\small\item\em Get the ask price. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_abf76502e3026dcca645abd955c28e826}{get\+\_\+bid}} () const
+\begin{DoxyCompactList}\small\item\em Get the ask price. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_a31a74db4ad9ed85c1ad4bd70fdd6e640}{get\+\_\+mid\+\_\+price}} () const
+\begin{DoxyCompactList}\small\item\em Get the mid price of the book. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_ae740cd0cbe22466f82eb517998b06530}{get\+\_\+\+VWAP}} () const
+\begin{DoxyCompactList}\small\item\em getter for vwap. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_ae904c4014cd8c9816283b37404d1a81a}{get\+Volume\+Imbalance}} () const
+\begin{DoxyCompactList}\small\item\em Get the volume imbalance of the book. Positive if there are more asks than bids, negative if there are more bids than asks. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_aea9cac90c4c48dad85a390f74c6535cd}{get\+Spread}} () const
+\begin{DoxyCompactList}\small\item\em Get the spread between ask and bid. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_ab92cbe516839515e17dac79c322706bb}{get\+\_\+total\+\_\+volume}} () const
+\begin{DoxyCompactList}\small\item\em gets the total volume in the book. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_a3e1ac4c7b7ced399c5c75e778326f2d7}{get\+\_\+total\+\_\+ask\+\_\+volume}} () const
+\begin{DoxyCompactList}\small\item\em gets the total ask volume in the book. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_limit_order_book_ab866142ce09c0a50b4dc519bb2c02c57}{get\+\_\+total\+\_\+bid\+\_\+volume}} () const
+\begin{DoxyCompactList}\small\item\em gets the total bid volume in the book. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_limit_order_book_a41da040fc2339145b10e54814ad69d6a}{get\+Num\+Active\+Orders}} () const
+\item 
+\Hypertarget{class_limit_order_book_a34ed4feb946fbf93c9d4319a675dc8f8}\label{class_limit_order_book_a34ed4feb946fbf93c9d4319a675dc8f8} 
+const \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$, \mbox{\hyperlink{struct_ptr_greater}{Ptr\+Greater}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ $>$ \& {\bfseries get\+Ask\+Orders} () const
+\begin{DoxyCompactList}\small\item\em Get the active limit ask orders. \end{DoxyCompactList}\item 
+\Hypertarget{class_limit_order_book_a4cf4a6287a6cf50238c30d9daf38de27}\label{class_limit_order_book_a4cf4a6287a6cf50238c30d9daf38de27} 
+const \mbox{\hyperlink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$, \mbox{\hyperlink{struct_ptr_less}{Ptr\+Less}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$ $>$ $>$ \& {\bfseries get\+Bid\+Orders} () const
+\begin{DoxyCompactList}\small\item\em Get the current limit bid orders. \end{DoxyCompactList}\item 
+\Hypertarget{class_limit_order_book_a645aa1cfcd296e28ee92a60b3d809127}\label{class_limit_order_book_a645aa1cfcd296e28ee92a60b3d809127} 
+void {\bfseries add\+Order} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$)
+\begin{DoxyCompactList}\small\item\em helper function of the \doxylink{class_market_a0398c620113937712fe96f4bb8795d09}{Market\+::simulate\+Market} method. Appends an order to the active orders, that will then be matched by the match\+Orders method. \end{DoxyCompactList}\item 
+\Hypertarget{class_limit_order_book_acc5e4c565d50ca19c28dbe705afbd7d4}\label{class_limit_order_book_acc5e4c565d50ca19c28dbe705afbd7d4} 
+void {\bfseries delete\+Order} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_order}{Order}} $>$)
+\begin{DoxyCompactList}\small\item\em deletes the input order on the limit order book by invoking either the delete\+Limit\+Order or the delete\+Market\+Order private methods. \end{DoxyCompactList}\item 
+\Hypertarget{class_limit_order_book_a6f9916e4333c2ec1316988aed4565a67}\label{class_limit_order_book_a6f9916e4333c2ec1316988aed4565a67} 
+void {\bfseries match\+Orders} ()
+\begin{DoxyCompactList}\small\item\em Helper function of \doxylink{class_market_a0398c620113937712fe96f4bb8795d09}{Market\+::simulate\+Market}. Attempts to match the orders currently present in active\+Orders with the active limit orders. In the process, it places new limit orders, updates VWAP, updates the traders portfolios, deletes fully matched orders and any orders encountered in the book that traders could not fully match. It also appends any unmatched market orders to the active\+Orders list and the active orders of the respective traders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{class_limit_order_book_a901c41bb17798b3f3c2fbc01c5643e59}{operator$<$$<$}} (std\+::ostream \&, const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&)
+\begin{DoxyCompactList}\small\item\em inputs a string into a stream showing the current ask prices, bid prices, and unmatched orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+class that models a limit order book. It has containers for ask prices, bid prices and rules for matching orders. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_limit_order_book_acc3e9cbafd963124e3fe697adab00c02}\label{class_limit_order_book_acc3e9cbafd963124e3fe697adab00c02} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_ask@{get\_ask}}
+\index{get\_ask@{get\_ask}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_ask()}{get\_ask()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+ask (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the ask price. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the lowest ask price if ask\+\_\+prices is not empty, LOWER\+\_\+\+PRICE\+\_\+\+LIMIT otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_abf76502e3026dcca645abd955c28e826}\label{class_limit_order_book_abf76502e3026dcca645abd955c28e826} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_bid@{get\_bid}}
+\index{get\_bid@{get\_bid}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_bid()}{get\_bid()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+bid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the ask price. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the lowest ask price if ask\+\_\+prices is not empty, LOWER\+\_\+\+PRICE\+\_\+\+LIMIT otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_a31a74db4ad9ed85c1ad4bd70fdd6e640}\label{class_limit_order_book_a31a74db4ad9ed85c1ad4bd70fdd6e640} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_mid\_price@{get\_mid\_price}}
+\index{get\_mid\_price@{get\_mid\_price}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_mid\_price()}{get\_mid\_price()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+mid\+\_\+price (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the mid price of the book. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the average between the ask price and the bid price. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_a3e1ac4c7b7ced399c5c75e778326f2d7}\label{class_limit_order_book_a3e1ac4c7b7ced399c5c75e778326f2d7} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_total\_ask\_volume@{get\_total\_ask\_volume}}
+\index{get\_total\_ask\_volume@{get\_total\_ask\_volume}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_total\_ask\_volume()}{get\_total\_ask\_volume()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+total\+\_\+ask\+\_\+volume (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+gets the total ask volume in the book. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_ab866142ce09c0a50b4dc519bb2c02c57}\label{class_limit_order_book_ab866142ce09c0a50b4dc519bb2c02c57} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_total\_bid\_volume@{get\_total\_bid\_volume}}
+\index{get\_total\_bid\_volume@{get\_total\_bid\_volume}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_total\_bid\_volume()}{get\_total\_bid\_volume()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+total\+\_\+bid\+\_\+volume (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+gets the total bid volume in the book. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_ab92cbe516839515e17dac79c322706bb}\label{class_limit_order_book_ab92cbe516839515e17dac79c322706bb} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_total\_volume@{get\_total\_volume}}
+\index{get\_total\_volume@{get\_total\_volume}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_total\_volume()}{get\_total\_volume()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+total\+\_\+volume (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+gets the total volume in the book. 
+
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_ae740cd0cbe22466f82eb517998b06530}\label{class_limit_order_book_ae740cd0cbe22466f82eb517998b06530} 
+\index{LimitOrderBook@{LimitOrderBook}!get\_VWAP@{get\_VWAP}}
+\index{get\_VWAP@{get\_VWAP}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{get\_VWAP()}{get\_VWAP()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+\_\+\+VWAP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+getter for vwap. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the vwap computed only over the last timestep. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_a41da040fc2339145b10e54814ad69d6a}\label{class_limit_order_book_a41da040fc2339145b10e54814ad69d6a} 
+\index{LimitOrderBook@{LimitOrderBook}!getNumActiveOrders@{getNumActiveOrders}}
+\index{getNumActiveOrders@{getNumActiveOrders}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{getNumActiveOrders()}{getNumActiveOrders()}}
+{\footnotesize\ttfamily int Limit\+Order\+Book\+::get\+Num\+Active\+Orders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the number of orders which are currently in either ask\+\_\+prices, bid\+\_\+prices or active\+Orders 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_aea9cac90c4c48dad85a390f74c6535cd}\label{class_limit_order_book_aea9cac90c4c48dad85a390f74c6535cd} 
+\index{LimitOrderBook@{LimitOrderBook}!getSpread@{getSpread}}
+\index{getSpread@{getSpread}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{getSpread()}{getSpread()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+Spread (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the spread between ask and bid. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the difference between the ask price and the bid price. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_ae904c4014cd8c9816283b37404d1a81a}\label{class_limit_order_book_ae904c4014cd8c9816283b37404d1a81a} 
+\index{LimitOrderBook@{LimitOrderBook}!getVolumeImbalance@{getVolumeImbalance}}
+\index{getVolumeImbalance@{getVolumeImbalance}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{getVolumeImbalance()}{getVolumeImbalance()}}
+{\footnotesize\ttfamily double Limit\+Order\+Book\+::get\+Volume\+Imbalance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the volume imbalance of the book. Positive if there are more asks than bids, negative if there are more bids than asks. 
+
+\begin{DoxyReturn}{Returns}
+double\+: the difference between the total ask volume and the total bid volume. 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_a1a8aef2200de8232d1e78cea8ab5240b}\label{class_limit_order_book_a1a8aef2200de8232d1e78cea8ab5240b} 
+\index{LimitOrderBook@{LimitOrderBook}!hasAskOrders@{hasAskOrders}}
+\index{hasAskOrders@{hasAskOrders}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{hasAskOrders()}{hasAskOrders()}}
+{\footnotesize\ttfamily bool Limit\+Order\+Book\+::has\+Ask\+Orders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Checks whether the Limit \doxylink{struct_order}{Order} book has any active ask limit orders. 
+
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_limit_order_book_a4ec9713547932169226efe0a26d52748}\label{class_limit_order_book_a4ec9713547932169226efe0a26d52748} 
+\index{LimitOrderBook@{LimitOrderBook}!hasBidOrders@{hasBidOrders}}
+\index{hasBidOrders@{hasBidOrders}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{hasBidOrders()}{hasBidOrders()}}
+{\footnotesize\ttfamily bool Limit\+Order\+Book\+::has\+Bid\+Orders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Checks whether the Limit \doxylink{struct_order}{Order} book has any active bid limit orders. 
+
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{class_limit_order_book_a901c41bb17798b3f3c2fbc01c5643e59}\label{class_limit_order_book_a901c41bb17798b3f3c2fbc01c5643e59} 
+\index{LimitOrderBook@{LimitOrderBook}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!LimitOrderBook@{LimitOrderBook}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{,  }\item[{const \mbox{\hyperlink{class_limit_order_book}{Limit\+Order\+Book}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+inputs a string into a stream showing the current ask prices, bid prices, and unmatched orders. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/\+Limit\+Order\+Book/Limit\+Order\+Book.\+h\end{DoxyCompactItemize}

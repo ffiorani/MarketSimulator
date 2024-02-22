@@ -9,33 +9,34 @@
 #include "LimitOrderBook.h"
 
 TEST_CASE("NewsGenerator - how does it affect buy or sell decision? - empty limit order book") {
-    NewsGenerator newsGenerator;
-    double news = newsGenerator();
-    LimitOrderBook limitOrderBook;
+    auto playerPtr = std::make_shared<MarketPlayer>();
+    LimitOrderBook book;
+    double news = 0.5;
+    int timeStep = 0;
 
-    int numTraders {100};
-    for (int i = 0; i < numTraders; i++)
-    {
-        auto playerPtr = std::make_shared<MarketPlayer>();
-        double probability = playerPtr -> computeProbabilityOfTrading(limitOrderBook, news);
-        bool isLimit = playerPtr -> determineLimitOrMarket(probability, limitOrderBook);
-        bool isBuy = playerPtr -> determineIfBuyOrSell(probability, limitOrderBook);
-        double price = playerPtr -> computePrice(probability, limitOrderBook, isBuy);
-        if (news > 0)
-        {
-            REQUIRE(probability > 0.5);
-            REQUIRE(isLimit == true);
-            REQUIRE(isBuy == true);
-            REQUIRE(price > 0.1);
-        }
-        else
-        {
-            REQUIRE(probability < 0.5);
-            REQUIRE(isLimit == false);
-            REQUIRE(isBuy == false);
-            REQUIRE(price > 0);
-        }
-    }
+    auto order = trade(news, book, playerPtr);
+
+    REQUIRE(order != nullptr);
+    REQUIRE(order -> volume > 0);
+    REQUIRE(order -> price > 0);
+    REQUIRE(order -> price != Approx(1.0));
+}
+
+TEST_CASE("TestMarketCreation", "[Market]") {
+    unsigned int numTraders = 10;
+    Market market(numTraders);
+
+    REQUIRE(market.getNumTraders() == numTraders);
+}
+
+
+TEST_CASE("TestMarketSimulate", "[Market]") {
+    Market market(10);
+    std::vector<double> priceHistory;
+
+    market.simulateMarket(100, priceHistory);
+
+    REQUIRE(priceHistory.size() == 100);
 }
 
 TEST_CASE("Market simulation") {

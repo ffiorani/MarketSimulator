@@ -14,3 +14,17 @@ prepare_and_build:
 
 run_executable:
 	cd ./build/app && ./Executable
+
+build_docs:
+	cd ./docs && doxygen
+
+run_executable:
+	cd ./build/app && ./Executable
+
+run_tests:
+	cd ./build/test/LimitOrderBookTests && ./LimitOrderBookTests
+	cd ./build/test/MarketPlayerTests && ./MarketPlayerTests
+	cd ./build/test/MarketTests && ./MarketTests
+
+build_docs:
+	cd ./docs && doxygen

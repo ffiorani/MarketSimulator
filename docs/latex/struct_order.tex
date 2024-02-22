@@ -1,0 +1,106 @@
+\doxysection{Order Struct Reference}
+\hypertarget{struct_order}{}\label{struct_order}\index{Order@{Order}}
+
+
+The \doxylink{struct_order}{Order} struct is used to represent the orders in the \doxylink{class_limit_order_book}{Limit\+Order\+Book}. It contains the price, volume, whether it is a buy or sell order, whether it is a limit or market order. It also contains a weak pointer to the trader who placed the order.  
+
+
+
+
+{\ttfamily \#include $<$Limit\+Order\+Book.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_order_a47087a9616fa590188c235414db58479}{Order}} (double, double, bool, bool, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_market_player}{Market\+Player}} $>$)
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{struct_order}{Order} object takes in. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_order_ae5311e81a8d9955bd2473522d7bcb21b}{update\+Order\+Volume}} (double)
+\begin{DoxyCompactList}\small\item\em Replaces the volume of the order with the. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_order_a9fa186ace1563f95c924d7003ec3a30c}{update\+Order\+Price}} (double)
+\begin{DoxyCompactList}\small\item\em Replaces the price of the order with the. \end{DoxyCompactList}\item 
+\Hypertarget{struct_order_a4e40c5a1df5da8b81d2a619116a589f5}\label{struct_order_a4e40c5a1df5da8b81d2a619116a589f5} 
+void {\bfseries add\+To\+Current\+Price} (double)
+\begin{DoxyCompactList}\small\item\em Updates the price of the order by adding the input parameter to the current price checks whether the price is exceeding the upper or lower price limit and sets the price to the limit if it does used in the \doxylink{classcustom__priority__queue}{custom\+\_\+priority\+\_\+queue} update\+Prices method. \end{DoxyCompactList}\item 
+\Hypertarget{struct_order_a62cd1773cdb90a405e9527a642f49618}\label{struct_order_a62cd1773cdb90a405e9527a642f49618} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{struct_order}{Order}} \&) const
+\begin{DoxyCompactList}\small\item\em Orders the first by price, then by volume. \end{DoxyCompactList}\item 
+\Hypertarget{struct_order_a39a66c088e0088e6c3331adf42989a36}\label{struct_order_a39a66c088e0088e6c3331adf42989a36} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{struct_order}{Order}} \&) const
+\begin{DoxyCompactList}\small\item\em Orders the first by price, then by volume. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_order_a22df57af82ecda59bd0ed1f7534a170b}\label{struct_order_a22df57af82ecda59bd0ed1f7534a170b} 
+double {\bfseries price}
+\item 
+\Hypertarget{struct_order_a0ca3fc858d19cd5b8d1880001423d5a0}\label{struct_order_a0ca3fc858d19cd5b8d1880001423d5a0} 
+double {\bfseries volume}
+\item 
+\Hypertarget{struct_order_a3e859aafab0db60efab33bae2747fc98}\label{struct_order_a3e859aafab0db60efab33bae2747fc98} 
+bool {\bfseries is\+Buy}
+\item 
+\Hypertarget{struct_order_a162233410f9557dbaacd860d7156c029}\label{struct_order_a162233410f9557dbaacd860d7156c029} 
+bool {\bfseries is\+Limit}
+\item 
+\Hypertarget{struct_order_a4f271f8b95eeb0ec57638336967ce235}\label{struct_order_a4f271f8b95eeb0ec57638336967ce235} 
+std\+::weak\+\_\+ptr$<$ \mbox{\hyperlink{class_market_player}{Market\+Player}} $>$ {\bfseries trader}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \doxylink{struct_order}{Order} struct is used to represent the orders in the \doxylink{class_limit_order_book}{Limit\+Order\+Book}. It contains the price, volume, whether it is a buy or sell order, whether it is a limit or market order. It also contains a weak pointer to the trader who placed the order. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_order_a47087a9616fa590188c235414db58479}\label{struct_order_a47087a9616fa590188c235414db58479} 
+\index{Order@{Order}!Order@{Order}}
+\index{Order@{Order}!Order@{Order}}
+\doxysubsubsection{\texorpdfstring{Order()}{Order()}}
+{\footnotesize\ttfamily Order\+::\+Order (\begin{DoxyParamCaption}\item[{double}]{,  }\item[{double}]{,  }\item[{bool}]{,  }\item[{bool}]{,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_market_player}{Market\+Player}} $>$}]{ }\end{DoxyParamCaption})}
+
+
+
+Construct a new \doxylink{struct_order}{Order} object takes in. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em price} & \\
+\hline
+\end{DoxyParams}
+param volume , whether it is a buy order, whether it is a limit order, and a shared pointer to the trader who placed the order 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_order_a9fa186ace1563f95c924d7003ec3a30c}\label{struct_order_a9fa186ace1563f95c924d7003ec3a30c} 
+\index{Order@{Order}!updateOrderPrice@{updateOrderPrice}}
+\index{updateOrderPrice@{updateOrderPrice}!Order@{Order}}
+\doxysubsubsection{\texorpdfstring{updateOrderPrice()}{updateOrderPrice()}}
+{\footnotesize\ttfamily void Order\+::update\+Order\+Price (\begin{DoxyParamCaption}\item[{double}]{ }\end{DoxyParamCaption})}
+
+
+
+Replaces the price of the order with the. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Price} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct_order_ae5311e81a8d9955bd2473522d7bcb21b}\label{struct_order_ae5311e81a8d9955bd2473522d7bcb21b} 
+\index{Order@{Order}!updateOrderVolume@{updateOrderVolume}}
+\index{updateOrderVolume@{updateOrderVolume}!Order@{Order}}
+\doxysubsubsection{\texorpdfstring{updateOrderVolume()}{updateOrderVolume()}}
+{\footnotesize\ttfamily void Order\+::update\+Order\+Volume (\begin{DoxyParamCaption}\item[{double}]{ }\end{DoxyParamCaption})}
+
+
+
+Replaces the volume of the order with the. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Volume} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/francescofiorani/doc/\+Market\+Simulator/src/\+Market/\+Limit\+Order\+Book/Limit\+Order\+Book.\+h\end{DoxyCompactItemize}

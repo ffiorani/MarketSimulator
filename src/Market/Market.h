@@ -37,7 +37,35 @@ public:
     // helper functions
     std::string printMarketSummary() const;
 
-    LimitOrderBook & getLimitOrderBook() { return limitOrderBook; }
+    /**
+    * @brief
+    * Returns a sorted vector of the cash distribution of the traders.
+    * @return std::vector<double>
+    */
+    std::vector<double> getCashDistribution() const;
+
+    /**
+     * @brief
+     * Returns a sorted vector of the shares distribution of the traders.
+     *
+     * @return std::vector<double>
+     */
+    std::vector<double> getSharesDistribution() const;
+
+    /**
+     * @brief
+     * Returns a sorted vector of the wealth distribution of the traders.
+     *
+     * @return std::vector<double>
+     */
+    std::vector<double> getWealthDistribution() const;
+
+    /**
+     * @brief Get the Limit Order Book object
+     *
+     * @return
+     */
+    const LimitOrderBook & getLimitOrderBook() const { return limitOrderBook; }
 
     /**
      * @brief
