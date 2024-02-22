@@ -30,7 +30,7 @@ void writeVectorToFile(const std::vector<double>& vec, const std::string& filena
  * @return int
  */
 int main() {
-    const size_t numTraders {3};
+    const size_t numTraders {100};
     const size_t numSteps {100};
 
     Market market(numTraders);
@@ -40,9 +40,9 @@ int main() {
     market.simulateMarket(numSteps, priceHistory);
 
     writeVectorToFile(priceHistory, "priceHistory.csv");
-    writeVectorToFile(market.getCashDistribution(), "cashDistribution.csv");
-    writeVectorToFile(market.getSharesDistribution(), "sharesDistribution.csv");
-    writeVectorToFile(market.getWealthDistribution(), "wealthDistribution.csv");
+    writeVectorToFile(market.getCashDistribution(), "cash.csv");
+    writeVectorToFile(market.getSharesDistribution(), "shares.csv");
+    writeVectorToFile(market.getWealthDistribution(), "wealth.csv");
 
     std::cout << market;
 

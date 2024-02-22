@@ -210,7 +210,11 @@ double MarketPlayer::computeProbabilityOfTrading(LimitOrderBook & limitOrderBook
 
     // 0.5 corresponds to no trading
     double totalImpact {newsImpact + spreadImpact + imbalanceImpact + priceImpact - riskAversion};
-    return 0.5 * (1 + totalImpact);
+
+    // using a sigmoid function to map the total impact to a probability
+    double probability = 1.0 / (1.0 + std::exp(-totalImpact));
+
+    return probability;
 }
 
 bool MarketPlayer::determineIfLimitOrder(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
