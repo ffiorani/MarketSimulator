@@ -218,7 +218,7 @@ double MarketPlayer::computeProbabilityOfTrading(LimitOrderBook & limitOrderBook
 }
 
 bool MarketPlayer::determineIfLimitOrder(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
-    return tradingLikelihood > 0.2 && tradingLikelihood < 0.8;
+    return (tradingLikelihood > 0.05) && (tradingLikelihood < 0.95);
 }
 
 bool MarketPlayer::determineIfBuyOrSell(double tradingLikelihood, LimitOrderBook & limitOrderBook) const {
