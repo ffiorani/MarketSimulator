@@ -18,9 +18,6 @@ run_executable:
 build_docs:
 	cd ./docs && doxygen
 
-run_executable:
-	cd ./build/app && ./Executable
-
 run_tests:
 	cd ./build/test/LimitOrderBookTests && ./LimitOrderBookTests
 	cd ./build/test/MarketPlayerTests && ./MarketPlayerTests
